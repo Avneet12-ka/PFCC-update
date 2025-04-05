@@ -1077,3 +1077,36 @@ function printCertificate() {
     
     printWindow.document.close();
 }
+// Add this at the very end of your script.js file
+document.addEventListener('DOMContentLoaded', function() {
+    // Fix for certificate button
+    const certBtn = document.getElementById('view-certificate-button');
+    if (certBtn) {
+        certBtn.removeAttribute('onclick');
+        certBtn.addEventListener('click', function() {
+            if (!this.disabled) {
+                generateCertificate();
+            }
+        });
+    }
+    
+    // Override localStorage for immediate testing (remove this in production)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('test-certificate')) {
+        const lectureProgress = {};
+        const caseProgress = {};
+        const quizProgress = {};
+        for (let i = 1; i <= 5; i++) {
+            lectureProgress[i] = { completed: true, completionDate: new Date().toISOString() };
+            caseProgress[i] = { completed: true, completionDate: new Date().toISOString() };
+            quizProgress[i] = { completed: true, score: 80, completionDate: new Date().toISOString() };
+        }
+        localStorage.setItem('lectureProgress', JSON.stringify(lectureProgress));
+        localStorage.setItem('caseProgress', JSON.stringify(caseProgress));
+        localStorage.setItem('quizProgress', JSON.stringify(quizProgress));
+        localStorage.setItem('gameProgress', JSON.stringify({ completed: true, score: 80, completionDate: new Date().toISOString() }));
+        
+        // Update UI
+        checkCertificateEligibility();
+    }
+});
