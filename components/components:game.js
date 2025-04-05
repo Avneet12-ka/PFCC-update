@@ -304,7 +304,7 @@ function completeGame() {
   });
 }
 
-// Export functions for use in main script
+// Make these functions available globally
 window.loadScenario = loadScenario;
 window.selectChoice = selectChoice;
 window.completeGame = completeGame;
