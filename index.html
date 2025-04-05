@@ -2400,29 +2400,57 @@
         }
     });
     
-    function testCertificate() {
-        // Set all components as completed for testing
-        const lectureProgress = {};
-        const caseProgress = {};
-        const quizProgress = {};
-        for (let i = 1; i <= 5; i++) {
-            lectureProgress[i] = { completed: true, completionDate: new Date().toISOString() };
-            caseProgress[i] = { completed: true, completionDate: new Date().toISOString() };
-            quizProgress[i] = { completed: true, score: 80, completionDate: new Date().toISOString() };
-        }
-        localStorage.setItem('lectureProgress', JSON.stringify(lectureProgress));
-        localStorage.setItem('caseProgress', JSON.stringify(caseProgress));
-        localStorage.setItem('quizProgress', JSON.stringify(quizProgress));
-        localStorage.setItem('gameProgress', JSON.stringify({ completed: true, score: 80, completionDate: new Date().toISOString() }));
-        
-        // Update UI
-        document.getElementById('view-certificate-button').disabled = false;
-        document.getElementById('view-certificate-button').classList.remove('cursor-not-allowed', 'text-gray-400');
-        document.getElementById('view-certificate-button').classList.add('text-white');
-        
-        // Alert user
-        alert("Certificate testing mode enabled. You can now generate a certificate.");
+<button class="inline-block px-6 py-3 bg-yellow-500 text-white rounded-lg font-bold text-lg" onclick="testCertificateNow()">Test Certificate</button>
+
+<script>
+function testCertificateNow() {
+    // Create completed data
+    const lectureProgress = {};
+    const caseProgress = {};
+    const quizProgress = {};
+    for (let i = 1; i <= 5; i++) {
+        lectureProgress[i] = { completed: true, completionDate: new Date().toISOString() };
+        caseProgress[i] = { completed: true, completionDate: new Date().toISOString() };
+        quizProgress[i] = { completed: true, score: 80, completionDate: new Date().toISOString() };
     }
+    
+    // Save to localStorage
+    localStorage.setItem('lectureProgress', JSON.stringify(lectureProgress));
+    localStorage.setItem('caseProgress', JSON.stringify(caseProgress));
+    localStorage.setItem('quizProgress', JSON.stringify(quizProgress));
+    localStorage.setItem('gameProgress', JSON.stringify({ completed: true, score: 80, completionDate: new Date().toISOString() }));
+    
+    // Enable the button directly
+    const certButton = document.getElementById('view-certificate-button');
+    certButton.disabled = false;
+    certButton.classList.remove('cursor-not-allowed', 'text-gray-400');
+    certButton.classList.add('text-white');
+    
+    // Fix the certificate generation function
+    certButton.onclick = function() {
+        // Get participant name
+        const nameInput = document.getElementById('participant-name');
+        if (!nameInput.value.trim()) {
+            alert('Please enter your name for the certificate');
+            nameInput.focus();
+            return;
+        }
+        
+        // Update certificate with participant name
+        document.getElementById('certificate-name').textContent = nameInput.value;
+        
+        // Update certificate date
+        document.getElementById('certificate-date').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Show certificate modal
+        const modal = document.getElementById('certificate-modal');
+        if (modal) modal.classList.add('show');
+    };
+    
+    alert("Certificate testing mode enabled. You can now generate a certificate.");
+}
 </script>
-</body>
-</html>
