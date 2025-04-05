@@ -73,13 +73,12 @@ function setupEventListeners() {
     });
     
     // Quiz buttons
-    document.querySelectorAll('button[onclick*="selectQuiz"]').forEach(btn => {
-        const match = btn.getAttribute('onclick').match(/selectQuiz\((\d+)\)/);
-        if (match) {
-            const quizId = parseInt(match[1]);
+    document.querySelectorAll('.quiz-selector').forEach(btn => {
+        const quizId = btn.getAttribute('data-quiz');
+        if (quizId) {
             btn.removeAttribute('onclick');
             btn.addEventListener('click', function() {
-                startQuiz(quizId);
+                startQuiz(parseInt(quizId));
             });
         }
     });
@@ -92,10 +91,11 @@ function setupEventListeners() {
     }
     
     // Reset quiz button
-    document.querySelectorAll('button[onclick*="resetQuiz"]').forEach(btn => {
-        btn.removeAttribute('onclick');
-        btn.addEventListener('click', resetQuiz);
-    });
+    const resetQuizBtn = document.querySelector('button[onclick="resetQuiz()"]');
+    if (resetQuizBtn) {
+        resetQuizBtn.removeAttribute('onclick');
+        resetQuizBtn.addEventListener('click', resetQuiz);
+    }
     
     // Slide navigation
     document.querySelectorAll('button[onclick*="prevSlide"]').forEach(btn => {
@@ -206,10 +206,24 @@ function showSection(sectionId) {
         section.style.display = 'block';
         
         // Special section handling
-        if (sectionId === 'interactive-game' && typeof loadScenario === 'function') {
-            loadScenario(0);
+        if (sectionId === 'interactive-game') {
+            console.log("Loading game...");
+            // Ensure the game loads properly by checking if loadScenario is available
+            if (typeof window.loadScenario === 'function') {
+                window.loadScenario(0);
+            } else {
+                console.error("Game function loadScenario not found!");
+                // Try to load it after a brief delay in case script is still loading
+                setTimeout(() => {
+                    if (typeof window.loadScenario === 'function') {
+                        window.loadScenario(0);
+                    } else {
+                        alert("Game could not be loaded. Please refresh the page and try again.");
+                    }
+                }, 1000);
+            }
         } else if (sectionId === 'quizzes') {
-            document.getElementById('quiz-selector-container').style.display = 'block';
+            document.getElementById('quiz-selector-container').style.display = 'grid';
             document.getElementById('quiz-container').style.display = 'none';
             document.getElementById('quiz-results').style.display = 'none';
         }
@@ -984,7 +998,7 @@ function resetQuiz() {
     // Go back to quiz selector
     document.getElementById('quiz-results').style.display = 'none';
     document.getElementById('quiz-container').style.display = 'none';
-    document.getElementById('quiz-selector-container').style.display = 'block';
+    document.getElementById('quiz-selector-container').style.display = 'grid';
 }
 
 // Resource functions
