@@ -116,6 +116,7 @@
                 <li><a href="#lectures" class="nav-link block px-4 py-3 font-medium hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 transition-colors" onclick="showSection('lectures'); return false;">Lectures</a></li>
                 <li><a href="#case-studies" class="nav-link block px-4 py-3 font-medium hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 transition-colors" onclick="showSection('case-studies'); return false;">Case Studies</a></li>
                 <li><a href="#quizzes" class="nav-link block px-4 py-3 font-medium hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 transition-colors" onclick="showSection('quizzes'); return false;">Quizzes</a></li>
+                <li><a href="#interactive-game" class="nav-link block px-4 py-3 font-medium hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 transition-colors" onclick="showSection('interactive-game'); return false;">Interactive Game</a></li>
                 <li><a href="#resources" class="nav-link block px-4 py-3 font-medium hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 transition-colors" onclick="showSection('resources'); return false;">Resources</a></li>
                 <li><a href="#certificate" class="nav-link block px-4 py-3 font-medium hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 transition-colors" onclick="showSection('certificate'); return false;">Certificate</a></li>
             </ul>
@@ -148,6 +149,7 @@
                     </div>
                     <div>
                         <p class="mb-2"><strong>Interactive Quizzes:</strong> Test your knowledge as you learn</p>
+                        <p class="mb-2"><strong>Interactive Game:</strong> Apply PFCC principles in realistic scenarios</p>
                         <p class="mb-2"><strong>Supplementary Resources:</strong> Additional materials for deeper learning</p>
                         <p class="mb-2"><strong>Certificate:</strong> Upon successful completion of the course</p>
                     </div>
@@ -161,7 +163,7 @@
             <div class="bg-blue-50 rounded-lg p-6 border-l-4 border-blue-700">
                 <h3 class="text-lg font-semibold mb-2">Your Progress</h3>
                 <p class="mb-4">Your progress will be automatically saved as you navigate through the course. You can track your progress on the progress bar and generate a certificate once you've completed the required components.</p>
-                <p><strong>Required for Certificate:</strong> Complete all 5 lectures, 5 case studies, and 5 quizzes with a score of at least 60%.</p>
+                <p><strong>Required for Certificate:</strong> Complete all 5 lectures, 5 case studies, 5 quizzes, and the interactive game with a score of at least 60%.</p>
             </div>
         </section>
         
@@ -199,7 +201,7 @@
                         <h3 class="font-semibold">Lecture 3: Communication Skills for PFCC</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Effective communication techniques for engaging patients and families.</p>
+                        <p class="text-sm text-gray-600 mb-4">Effective communication strategies to support patient and family engagement.</p>
                         <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showLecture(3)">View Lecture</button>
                     </div>
                 </div>
@@ -207,10 +209,10 @@
                 <!-- Lecture 4 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
                     <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Lecture 4: Building Systems to Support PFCC</h3>
+                        <h3 class="font-semibold">Lecture 4: System Design for PFCC</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Organizational structures, policies, and environments that enable PFCC.</p>
+                        <p class="text-sm text-gray-600 mb-4">Creating organizational structures and processes that support PFCC implementation.</p>
                         <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showLecture(4)">View Lecture</button>
                     </div>
                 </div>
@@ -218,789 +220,424 @@
                 <!-- Lecture 5 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
                     <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Lecture 5: Measuring and Improving PFCC Outcomes</h3>
+                        <h3 class="font-semibold">Lecture 5: Measuring PFCC Outcomes</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Assessment tools, metrics, and continuous improvement strategies for PFCC.</p>
+                        <p class="text-sm text-gray-600 mb-4">Approaches to evaluating and measuring the impact of PFCC initiatives.</p>
                         <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showLecture(5)">View Lecture</button>
                     </div>
                 </div>
             </div>
             
-            <!-- Lecture 1 Content -->
-            <div id="lecture1" class="lecture-slides bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Lecture 1: Foundations of Patient and Family-Centered Care</h3>
-                
+            <!-- Lecture Content -->
+            <div class="lecture-slides bg-white rounded-lg shadow-md p-6" id="lecture1" style="display:none;">
                 <div class="flex justify-between items-center mb-6">
-                    <div class="flex items-center">
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-l hover:bg-blue-200" onclick="prevSlide('lecture1')"><i class="fas fa-chevron-left"></i></button>
-                        <span class="px-3 py-1 bg-gray-100">Slide <span id="current-slide-lecture1">1</span> of 5</span>
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-r hover:bg-blue-200" onclick="nextSlide('lecture1')"><i class="fas fa-chevron-right"></i></button>
+                    <h3 class="text-xl font-semibold text-blue-800">Lecture 1: Foundations of PFCC</h3>
+                    <div class="text-sm text-gray-600">
+                        Slide <span id="current-slide-lecture1">1</span> of 5
                     </div>
-                    <div class="flex space-x-1">
+                </div>
+                
+                <!-- Slide 1 -->
+                <div class="slide active">
+                    <h4 class="text-lg font-semibold mb-4">Historical Development of PFCC</h4>
+                    <p class="mb-4">Patient and Family-Centered Care (PFCC) emerged from several converging influences:</p>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li class="mb-2">Consumer rights movement of the 1960s-70s emphasized patient autonomy</li>
+                        <li class="mb-2">Family advocacy, particularly in pediatrics, challenged restrictive visitation policies</li>
+                        <li class="mb-2">Research demonstrating improved outcomes with family involvement</li>
+                        <li class="mb-2">Growing recognition of the ethical imperative to involve patients in their care</li>
+                    </ul>
+                    <p>The Institute for Patient- and Family-Centered Care (IPFCC) was established in 1992 to advance the understanding and practice of patient and family-centered care.</p>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <h4 class="text-lg font-semibold mb-4">Definition and Core Concepts</h4>
+                    <p class="mb-4">PFCC is an approach to the planning, delivery, and evaluation of healthcare that is grounded in mutually beneficial partnerships among healthcare providers, patients, and families.</p>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <h5 class="font-semibold mb-2">The Four Core Principles:</h5>
+                        <ol class="list-decimal pl-5">
+                            <li class="mb-2"><strong>Dignity and Respect:</strong> Honoring patient and family perspectives and choices</li>
+                            <li class="mb-2"><strong>Information Sharing:</strong> Communicating complete and unbiased information with patients and families</li>
+                            <li class="mb-2"><strong>Participation:</strong> Encouraging and supporting patient and family participation in care and decision-making</li>
+                            <li class="mb-2"><strong>Collaboration:</strong> Involving patients and families in program and policy development, implementation, and evaluation</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="slide">
+                    <h4 class="text-lg font-semibold mb-4">Evidence Base for PFCC</h4>
+                    <p class="mb-4">Research has demonstrated numerous benefits associated with PFCC approaches:</p>
+                    <table class="w-full border-collapse mb-4">
+                        <thead>
+                            <tr class="bg-blue-100">
+                                <th class="border border-blue-200 p-2 text-left">Category</th>
+                                <th class="border border-blue-200 p-2 text-left">Benefits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-blue-200 p-2 font-medium">Patient Outcomes</td>
+                                <td class="border border-blue-200 p-2">Improved clinical outcomes, better symptom management, reduced anxiety</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-blue-200 p-2 font-medium">Experience of Care</td>
+                                <td class="border border-blue-200 p-2">Higher satisfaction, increased trust in healthcare providers, better adherence to treatment plans</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-blue-200 p-2 font-medium">Provider Experience</td>
+                                <td class="border border-blue-200 p-2">Improved job satisfaction, reduced burnout, enhanced communication skills</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-blue-200 p-2 font-medium">Healthcare System</td>
+                                <td class="border border-blue-200 p-2">Reduced readmissions, decreased length of stay, more efficient resource utilization</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-sm italic">Note: The strength of evidence varies across different settings and interventions.</p>
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="slide">
+                    <h4 class="text-lg font-semibold mb-4">Defining "Family" in PFCC</h4>
+                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 mb-4">
+                        <p class="italic">"Family is defined by the patient. Family members are individuals who are related in any way—biologically, legally, or emotionally. Patients define their 'family' and determine how they will participate in care and decision-making."</p>
+                        <p class="text-right mt-2">— Institute for Patient- and Family-Centered Care</p>
+                    </div>
+                    <p class="mb-4">This inclusive definition:</p>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li class="mb-2">Respects diverse family structures and relationships</li>
+                        <li class="mb-2">Acknowledges the patient as the expert in identifying their support network</li>
+                        <li class="mb-2">Avoids making assumptions based on legal or biological relationships</li>
+                        <li class="mb-2">Recognizes that family involvement should be determined by the patient</li>
+                    </ul>
+                    <p class="mb-4">The level of family involvement may vary based on patient preferences, cultural factors, and the nature of healthcare decisions.</p>
+                </div>
+                
+                <!-- Slide 5 -->
+                <div class="slide">
+                    <h4 class="text-lg font-semibold mb-4">PFCC Across the Continuum of Care</h4>
+                    <p class="mb-4">PFCC principles can be applied across all healthcare settings and throughout the care journey:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h5 class="font-semibold mb-2">Primary Care</h5>
+                            <ul class="list-disc pl-4 text-sm">
+                                <li>Shared decision-making</li>
+                                <li>Family-inclusive health education</li>
+                                <li>Accessible communication channels</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h5 class="font-semibold mb-2">Acute Care</h5>
+                            <ul class="list-disc pl-4 text-sm">
+                                <li>Family presence policies</li>
+                                <li>Bedside rounds with family</li>
+                                <li>Care transitions planning</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h5 class="font-semibold mb-2">Long-term Care</h5>
+                            <ul class="list-disc pl-4 text-sm">
+                                <li>Resident and family councils</li>
+                                <li>Personalized care planning</li>
+                                <li>Maintaining family connections</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="mb-4">Successful implementation requires organizational commitment, leadership support, and ongoing education for healthcare providers.</p>
+                    <div class="text-center mt-6">
+                        <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markLectureComplete(1)">Mark Lecture Complete</button>
+                    </div>
+                </div>
+                
+                <!-- Slide Navigation -->
+                <div class="flex justify-between items-center mt-6">
+                    <button class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors" onclick="prevSlide('lecture1')">Previous</button>
+                    <div class="slide-dots">
                         <span class="slide-dot active" onclick="goToSlide(1, 'lecture1')"></span>
                         <span class="slide-dot" onclick="goToSlide(2, 'lecture1')"></span>
                         <span class="slide-dot" onclick="goToSlide(3, 'lecture1')"></span>
                         <span class="slide-dot" onclick="goToSlide(4, 'lecture1')"></span>
                         <span class="slide-dot" onclick="goToSlide(5, 'lecture1')"></span>
                     </div>
-                </div>
-                
-                <!-- Slide 1 -->
-                <div class="slide active">
-                    <h4 class="text-lg font-semibold mb-4">Introduction to PFCC</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                        <p class="mb-2"><strong>Definition:</strong> Patient and Family-Centered Care is an approach to the planning, delivery, and evaluation of healthcare that is grounded in mutually beneficial partnerships among healthcare providers, patients, and families.</p>
-                    </div>
-                    <p class="mb-4">Patient and Family-Centered Care represents a paradigm shift from traditional healthcare models in several key ways:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div class="bg-gray-50 p-3 rounded border-l-4 border-red-500">
-                            <h5 class="font-semibold mb-2 text-red-700">Traditional Model</h5>
-                            <ul class="space-y-1 text-sm">
-                                <li>• Provider-centered decision making</li>
-                                <li>• Patients as passive recipients of care</li>
-                                <li>• Families as visitors</li>
-                                <li>• Information provided on need-to-know basis</li>
-                                <li>• Focus on medical/physical needs</li>
-                            </ul>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded border-l-4 border-green-500">
-                            <h5 class="font-semibold mb-2 text-green-700">PFCC Model</h5>
-                            <ul class="space-y-1 text-sm">
-                                <li>• Shared decision making</li>
-                                <li>• Patients as active participants</li>
-                                <li>• Families as essential partners</li>
-                                <li>• Transparent information sharing</li>
-                                <li>• Holistic approach to care</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 2 -->
-                <div class="slide">
-                    <h4 class="text-lg font-semibold mb-4">Historical Development</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                        <p>The concept of Patient and Family-Centered Care has evolved over several decades, with key milestones in its development:</p>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">1960s-1970s</h5>
-                            <p class="text-sm">Early advocacy for family presence in pediatric care; parents began staying with hospitalized children</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">1980s-1990s</h5>
-                            <p class="text-sm">Formation of the Institute for Family-Centered Care (now IPFCC); expansion of concepts to adult care</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">2000s</h5>
-                            <p class="text-sm">IOM identifies patient-centered care as one of six aims for healthcare improvement; increased research on benefits</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">2010s-Present</h5>
-                            <p class="text-sm">Integration into healthcare policy; emphasis on patient experience metrics; expansion to value-based care models</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 3 -->
-                <div class="slide">
-                    <h4 class="text-lg font-semibold mb-4">Core Principles of PFCC</h4>
-                    <p class="mb-4">The Institute for Patient and Family-Centered Care identifies four core concepts that serve as the foundation for PFCC:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2 text-blue-800">1. Dignity and Respect</h5>
-                            <p class="text-sm">Healthcare practitioners listen to and honor patient and family perspectives and choices. Patient and family knowledge, values, beliefs, and cultural backgrounds are incorporated into the planning and delivery of care.</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2 text-blue-800">2. Information Sharing</h5>
-                            <p class="text-sm">Healthcare practitioners communicate and share complete and unbiased information with patients and families in ways that are affirming and useful. Patients and families receive timely, complete, and accurate information to effectively participate in care and decision-making.</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2 text-blue-800">3. Participation</h5>
-                            <p class="text-sm">Patients and families are encouraged and supported in participating in care and decision-making at the level they choose.</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2 text-blue-800">4. Collaboration</h5>
-                            <p class="text-sm">Patients, families, healthcare practitioners, and leaders collaborate in policy and program development, implementation, and evaluation; in healthcare facility design; and in professional education, as well as in the delivery of care.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 4 -->
-                <div class="slide">
-                    <h4 class="text-lg font-semibold mb-4">Evidence Base for PFCC</h4>
-                    <p class="mb-4">Research has demonstrated numerous benefits of implementing PFCC approaches:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-                            <h5 class="font-semibold mb-2">Clinical Outcomes</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Improved adherence to treatment plans</li>
-                                <li>• Reduced medical errors</li>
-                                <li>• Decreased readmission rates</li>
-                                <li>• Better pain management</li>
-                                <li>• Improved health status</li>
-                            </ul>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-                            <h5 class="font-semibold mb-2">Patient Experience</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Higher satisfaction scores</li>
-                                <li>• Increased trust in healthcare providers</li>
-                                <li>• Reduced anxiety and stress</li>
-                                <li>• Better understanding of health conditions</li>
-                                <li>• Improved communication</li>
-                            </ul>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-                            <h5 class="font-semibold mb-2">System Benefits</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Reduced healthcare costs</li>
-                                <li>• Increased staff satisfaction</li>
-                                <li>• Lower staff turnover</li>
-                                <li>• Improved resource utilization</li>
-                                <li>• Enhanced organizational reputation</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 p-3 rounded-lg mt-4">
-                        <p class="text-sm"><strong>Note:</strong> While the evidence base is strong, implementation quality varies significantly, and contextual factors influence outcomes.</p>
-                    </div>
-                </div>
-                
-                <!-- Slide 5 -->
-                <div class="slide">
-                    <h4 class="text-lg font-semibold mb-4">Key Challenges and Considerations</h4>
-                    <p class="mb-4">Despite its benefits, implementing PFCC faces several challenges:</p>
-                    <div class="space-y-3 mb-4">
-                        <div class="bg-gray-50 p-3 rounded border-l-4 border-yellow-500">
-                            <h5 class="font-semibold mb-1">Cultural and Organizational Barriers</h5>
-                            <p class="text-sm">Hierarchical medical culture, resistance to change, lack of leadership support</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded border-l-4 border-yellow-500">
-                            <h5 class="font-semibold mb-1">Resource Constraints</h5>
-                            <p class="text-sm">Time limitations, staffing shortages, physical space constraints, financial pressures</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded border-l-4 border-yellow-500">
-                            <h5 class="font-semibold mb-1">Training and Education Gaps</h5>
-                            <p class="text-sm">Insufficient preparation in healthcare education, lack of ongoing professional development</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded border-l-4 border-yellow-500">
-                            <h5 class="font-semibold mb-1">Diversity and Inclusion Considerations</h5>
-                            <p class="text-sm">Ensuring PFCC approaches are culturally responsive and accessible to diverse populations</p>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h5 class="font-semibold mb-2">Key Success Factors</h5>
-                        <ul class="text-sm space-y-1">
-                            <li>• Strong leadership commitment and visible support</li>
-                            <li>• Systematic staff education and training</li>
-                            <li>• Patient and family advisors at all levels</li>
-                            <li>• Clear policies and procedures that support PFCC</li>
-                            <li>• Measurement and accountability systems</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="mt-8 flex justify-between">
-                    <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="showSection('lectures')">Back to Lectures</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markLectureComplete(1)">Mark as Completed</button>
+                    <button class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors" onclick="nextSlide('lecture1')">Next</button>
                 </div>
             </div>
             
-            <!-- Lecture 2 Content -->
-            <div id="lecture2" class="lecture-slides bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Lecture 2: Core Principles in Practice</h3>
-                
-                <div class="flex justify-between items-center mb-6">
-                    <div class="flex items-center">
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-l hover:bg-blue-200" onclick="prevSlide('lecture2')"><i class="fas fa-chevron-left"></i></button>
-                        <span class="px-3 py-1 bg-gray-100">Slide <span id="current-slide-lecture2">1</span> of 5</span>
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-r hover:bg-blue-200" onclick="nextSlide('lecture2')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="flex space-x-1">
-                        <span class="slide-dot active" onclick="goToSlide(1, 'lecture2')"></span>
-                        <span class="slide-dot" onclick="goToSlide(2, 'lecture2')"></span>
-                        <span class="slide-dot" onclick="goToSlide(3, 'lecture2')"></span>
-                        <span class="slide-dot" onclick="goToSlide(4, 'lecture2')"></span>
-                        <span class="slide-dot" onclick="goToSlide(5, 'lecture2')"></span>
-                    </div>
-                </div>
-                
-                <!-- Slide 1 -->
-                <div class="slide active">
-                    <h4 class="text-lg font-semibold mb-4">Applying PFCC Principles in Clinical Settings</h4>
-                    <p class="mb-4">This lecture explores how the four core principles of PFCC can be translated into everyday clinical practice:</p>
-                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                        <p>Moving from theoretical understanding to practical application requires intentional strategies and systems that support PFCC principles in various healthcare contexts.</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-2">Learning Objectives</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Identify practical applications of each PFCC core principle</li>
-                                <li>• Recognize barriers to implementation in clinical settings</li>
-                                <li>• Develop strategies to overcome common challenges</li>
-                                <li>• Evaluate current practices against PFCC standards</li>
-                            </ul>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-2">Key Considerations</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Different healthcare settings require tailored approaches</li>
-                                <li>• Implementation should be systematic but flexible</li>
-                                <li>• Small changes can have significant impact</li>
-                                <li>• Continuous improvement is essential</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional slides for Lecture 2 would be added here -->
-                <div class="slide">
-                    <h4 class="text-lg font-semibold mb-4">Dignity and Respect in Practice</h4>
-                    <p class="mb-4">Practical applications of the first core principle:</p>
-                    <div class="space-y-4">
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2">Key Behaviors</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Introducing yourself and explaining your role</li>
-                                <li>• Asking permission before examinations or procedures</li>
-                                <li>• Maintaining privacy and confidentiality</li>
-                                <li>• Using preferred names and pronouns</li>
-                                <li>• Acknowledging cultural practices and preferences</li>
-                            </ul>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-gray-50 p-3 rounded">
-                                <h5 class="font-semibold mb-2">System Supports</h5>
-                                <ul class="text-sm space-y-1">
-                                    <li>• Cultural competence training</li>
-                                    <li>• Diversity and inclusion policies</li>
-                                    <li>• Private consultation spaces</li>
-                                    <li>• Patient preference documentation</li>
-                                </ul>
-                            </div>
-                            <div class="bg-gray-50 p-3 rounded">
-                                <h5 class="font-semibold mb-2">Common Barriers</h5>
-                                <ul class="text-sm space-y-1">
-                                    <li>• Time constraints</li>
-                                    <li>• Unconscious bias</li>
-                                    <li>• Language differences</li>
-                                    <li>• Physical environment limitations</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-8 flex justify-between">
-                    <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="showSection('lectures')">Back to Lectures</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markLectureComplete(2)">Mark as Completed</button>
-                </div>
-            </div>
+            <!-- Additional lectures would follow the same structure -->
             
-            <!-- Lecture 3 Content -->
-            <div id="lecture3" class="lecture-slides bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Lecture 3: Communication Skills for PFCC</h3>
-                
-                <div class="flex justify-between items-center mb-6">
-                    <div class="flex items-center">
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-l hover:bg-blue-200" onclick="prevSlide('lecture3')"><i class="fas fa-chevron-left"></i></button>
-                        <span class="px-3 py-1 bg-gray-100">Slide <span id="current-slide-lecture3">1</span> of 5</span>
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-r hover:bg-blue-200" onclick="nextSlide('lecture3')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="flex space-x-1">
-                        <span class="slide-dot active" onclick="goToSlide(1, 'lecture3')"></span>
-                        <span class="slide-dot" onclick="goToSlide(2, 'lecture3')"></span>
-                        <span class="slide-dot" onclick="goToSlide(3, 'lecture3')"></span>
-                        <span class="slide-dot" onclick="goToSlide(4, 'lecture3')"></span>
-                        <span class="slide-dot" onclick="goToSlide(5, 'lecture3')"></span>
-                    </div>
-                </div>
-                
-                <!-- Slide 1 -->
-                <div class="slide active">
-                    <h4 class="text-lg font-semibold mb-4">Effective Communication in PFCC</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                        <p>Communication is the foundation of patient and family-centered care. This lecture explores essential communication skills and strategies that support meaningful partnerships with patients and families.</p>
-                    </div>
-                    <p class="mb-4">Effective communication in healthcare settings requires both technical skills and emotional intelligence:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-2">Technical Skills</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Clear explanation of medical information</li>
-                                <li>• Avoiding jargon and complex terminology</li>
-                                <li>• Structured information delivery</li>
-                                <li>• Health literacy considerations</li>
-                            </ul>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-2">Relational Skills</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Active listening</li>
-                                <li>• Empathy and compassion</li>
-                                <li>• Cultural sensitivity</li>
-                                <li>• Nonverbal communication awareness</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional slides for Lecture 3 would be added here -->
-                
-                <div class="mt-8 flex justify-between">
-                    <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="showSection('lectures')">Back to Lectures</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markLectureComplete(3)">Mark as Completed</button>
-                </div>
-            </div>
-            
-            <!-- Lecture 4 Content -->
-            <div id="lecture4" class="lecture-slides bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Lecture 4: Building Systems to Support PFCC</h3>
-                
-                <div class="flex justify-between items-center mb-6">
-                    <div class="flex items-center">
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-l hover:bg-blue-200" onclick="prevSlide('lecture4')"><i class="fas fa-chevron-left"></i></button>
-                        <span class="px-3 py-1 bg-gray-100">Slide <span id="current-slide-lecture4">1</span> of 5</span>
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-r hover:bg-blue-200" onclick="nextSlide('lecture4')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="flex space-x-1">
-                        <span class="slide-dot active" onclick="goToSlide(1, 'lecture4')"></span>
-                        <span class="slide-dot" onclick="goToSlide(2, 'lecture4')"></span>
-                        <span class="slide-dot" onclick="goToSlide(3, 'lecture4')"></span>
-                        <span class="slide-dot" onclick="goToSlide(4, 'lecture4')"></span>
-                        <span class="slide-dot" onclick="goToSlide(5, 'lecture4')"></span>
-                    </div>
-                </div>
-                
-                <!-- Slide 1 -->
-                <div class="slide active">
-                    <h4 class="text-lg font-semibold mb-4">Organizational Infrastructure for PFCC</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                        <p>Individual efforts alone cannot sustain PFCC; organizational systems and structures are essential to create environments where PFCC can thrive.</p>
-                    </div>
-                    <p class="mb-4">This lecture explores the key organizational elements needed to support and sustain PFCC:</p>
-                    <div class="space-y-3">
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">Leadership Commitment</h5>
-                            <p class="text-sm">How leaders at all levels can demonstrate commitment to PFCC principles</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">Policy Development</h5>
-                            <p class="text-sm">Creating organizational policies that support and reinforce PFCC practices</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">Physical Environment</h5>
-                            <p class="text-sm">Designing spaces that facilitate family presence and participation</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-1">Staff Support</h5>
-                            <p class="text-sm">Training, resources, and recognition systems that enable staff to practice PFCC</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional slides for Lecture 4 would be added here -->
-                
-                <div class="mt-8 flex justify-between">
-                    <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="showSection('lectures')">Back to Lectures</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markLectureComplete(4)">Mark as Completed</button>
-                </div>
-            </div>
-            
-            <!-- Lecture 5 Content -->
-            <div id="lecture5" class="lecture-slides bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Lecture 5: Measuring and Improving PFCC Outcomes</h3>
-                
-                <div class="flex justify-between items-center mb-6">
-                    <div class="flex items-center">
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-l hover:bg-blue-200" onclick="prevSlide('lecture5')"><i class="fas fa-chevron-left"></i></button>
-                        <span class="px-3 py-1 bg-gray-100">Slide <span id="current-slide-lecture5">1</span> of 5</span>
-                        <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-r hover:bg-blue-200" onclick="nextSlide('lecture5')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="flex space-x-1">
-                        <span class="slide-dot active" onclick="goToSlide(1, 'lecture5')"></span>
-                        <span class="slide-dot" onclick="goToSlide(2, 'lecture5')"></span>
-                        <span class="slide-dot" onclick="goToSlide(3, 'lecture5')"></span>
-                        <span class="slide-dot" onclick="goToSlide(4, 'lecture5')"></span>
-                        <span class="slide-dot" onclick="goToSlide(5, 'lecture5')"></span>
-                    </div>
-                </div>
-                
-                <!-- Slide 1 -->
-                <div class="slide active">
-                    <h4 class="text-lg font-semibold mb-4">Evaluating PFCC Implementation</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                        <p>"What gets measured gets improved." This lecture explores approaches to measuring, evaluating, and continuously improving PFCC implementation and outcomes.</p>
-                    </div>
-                    <p class="mb-4">Comprehensive evaluation of PFCC requires multiple measurement approaches:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-2">Process Measures</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Family presence policies</li>
-                                <li>• Information sharing practices</li>
-                                <li>• Patient/family participation in rounds</li>
-                                <li>• Documentation of preferences</li>
-                            </ul>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h5 class="font-semibold mb-2">Outcome Measures</h5>
-                            <ul class="text-sm space-y-1">
-                                <li>• Patient experience scores</li>
-                                <li>• Clinical outcomes</li>
-                                <li>• Staff satisfaction</li>
-                                <li>• Resource utilization</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional slides for Lecture 5 would be added here -->
-                
-                <div class="mt-8 flex justify-between">
-                    <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="showSection('lectures')">Back to Lectures</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markLectureComplete(5)">Mark as Completed</button>
-                </div>
+            <div class="mt-8 text-center">
+                <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('home')">Return to Course Home</button>
             </div>
         </section>
-
-<!-- Case Studies Section -->
-        <section id="case-studies" class="mb-16" style="display:none;">
+        
+        <!-- Case Studies Section -->
+        <section id="case-studies" style="display:none;">
             <h2 class="text-2xl font-bold text-blue-800 mb-4">Case Studies</h2>
-            <p class="mb-6">Explore real-world applications of Patient and Family-Centered Care through these detailed case studies from diverse healthcare settings:</p>
+            <p class="mb-6">These case studies illustrate real-world applications of PFCC principles across different healthcare contexts and populations.</p>
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <!-- Case Study 1 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Case Study 1: Bronson Methodist Hospital</h3>
+                    <div class="p-4 bg-green-50 border-l-4 border-green-700">
+                        <h3 class="font-semibold">Case Study 1: Pediatric Care</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">System-wide implementation of PFCC principles in a large hospital setting.</p>
-                        <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showCaseStudy(1)">View Case Study</button>
+                        <p class="text-sm text-gray-600 mb-4">Family-centered care in a pediatric intensive care unit.</p>
+                        <button class="inline-block px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors text-sm" onclick="showCaseStudy(1)">View Case Study</button>
                     </div>
                 </div>
                 
                 <!-- Case Study 2 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Case Study 2: Pediatric ICU Family Involvement</h3>
+                    <div class="p-4 bg-green-50 border-l-4 border-green-700">
+                        <h3 class="font-semibold">Case Study 2: Elder Care</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Family integration in critical care decision-making and care delivery.</p>
-                        <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showCaseStudy(2)">View Case Study</button>
+                        <p class="text-sm text-gray-600 mb-4">PFCC principles in a long-term care facility for older adults.</p>
+                        <button class="inline-block px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors text-sm" onclick="showCaseStudy(2)">View Case Study</button>
                     </div>
                 </div>
                 
                 <!-- Case Study 3 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Case Study 3: NICU Design with Patient/Family Input</h3>
+                    <div class="p-4 bg-green-50 border-l-4 border-green-700">
+                        <h3 class="font-semibold">Case Study 3: Mental Health</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Physical environment redesign to support family presence and participation.</p>
-                        <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showCaseStudy(3)">View Case Study</button>
+                        <p class="text-sm text-gray-600 mb-4">Family involvement in adult mental health treatment.</p>
+                        <button class="inline-block px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors text-sm" onclick="showCaseStudy(3)">View Case Study</button>
                     </div>
                 </div>
                 
                 <!-- Case Study 4 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Case Study 4: Emergency Department PFCC</h3>
+                    <div class="p-4 bg-green-50 border-l-4 border-green-700">
+                        <h3 class="font-semibold">Case Study 4: Emergency Care</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Implementation of PFCC principles in a fast-paced emergency setting.</p>
-                        <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showCaseStudy(4)">View Case Study</button>
+                        <p class="text-sm text-gray-600 mb-4">PFCC implementation in a busy emergency department.</p>
+                        <button class="inline-block px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors text-sm" onclick="showCaseStudy(4)">View Case Study</button>
                     </div>
                 </div>
                 
                 <!-- Case Study 5 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                        <h3 class="font-semibold">Case Study 5: Chronic Disease Management</h3>
+                    <div class="p-4 bg-green-50 border-l-4 border-green-700">
+                        <h3 class="font-semibold">Case Study 5: Cultural Considerations</h3>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-gray-600 mb-4">Partnerships with patients and families in managing chronic conditions.</p>
-                        <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" onclick="showCaseStudy(5)">View Case Study</button>
+                        <p class="text-sm text-gray-600 mb-4">Addressing cultural diversity in applying PFCC principles.</p>
+                        <button class="inline-block px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors text-sm" onclick="showCaseStudy(5)">View Case Study</button>
                     </div>
                 </div>
             </div>
             
-            <!-- Case Study 1 Content -->
-            <div id="case-study1" class="case-study bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Case Study 1: Bronson Methodist Hospital PFCC Implementation</h3>
+            <!-- Case Study Content -->
+            <div id="case-study1" class="case-study bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-green-800 mb-4">Case Study 1: Family-Centered Care in a Pediatric ICU</h3>
                 
-                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-700 mb-6">
-                    <h4 class="font-semibold mb-2">Overview</h4>
-                    <p>Bronson Methodist Hospital in Kalamazoo, Michigan implemented a comprehensive PFCC approach that earned them recognition as a leader in patient-centered care. This case study examines their transformational journey and key strategies.</p>
+                <div class="bg-green-50 p-4 rounded-lg mb-6">
+                    <h4 class="font-semibold mb-2">Case Overview</h4>
+                    <p>Eight-year-old Sophia was admitted to the pediatric intensive care unit (PICU) following complications from an asthma attack. This case study examines how PFCC principles were applied during her two-week PICU stay.</p>
                 </div>
                 
-                <h4 class="font-semibold mb-2">Background</h4>
-                <p class="mb-4">Bronson Methodist Hospital is a 434-bed tertiary care hospital serving southwest Michigan. In the early 2000s, the hospital leadership committed to transforming their organizational culture to fully embrace PFCC principles.</p>
-                
-                <h4 class="font-semibold mb-2">Key Initiatives</h4>
-                <ul class="list-disc pl-5 mb-6 space-y-2">
-                    <li><strong>Facility Redesign:</strong> The hospital underwent major renovations with patient and family input, creating all-private rooms designed for family presence.</li>
-                    <li><strong>Patient-Family Advisory Councils:</strong> The hospital established multiple councils that regularly provide input on policies, programs, and facility design.</li>
-                    <li><strong>Open Visitation Policies:</strong> Eliminated restrictive visiting hours, allowing families to be present according to patient preferences.</li>
-                    <li><strong>Staff Education:</strong> All staff, from executives to frontline employees, received training on PFCC principles and practices.</li>
+                <h4 class="font-semibold mb-2">Key Challenges</h4>
+                <ul class="list-disc pl-5 mb-4">
+                    <li class="mb-2">Balancing family presence with intensive medical interventions</li>
+                    <li class="mb-2">Managing information sharing during a rapidly changing clinical situation</li>
+                    <li class="mb-2">Supporting parents in decision-making during periods of uncertainty</li>
+                    <li class="mb-2">Including siblings in the care process appropriately</li>
                 </ul>
                 
-                <div class="bg-blue-50 p-4 rounded-lg mb-6">
-                    <h4 class="font-semibold mb-2">Implementation Strategy</h4>
-                    <ol class="list-decimal pl-5 space-y-2">
-                        <li>Strong executive leadership commitment with designated champions</li>
-                        <li>Clear articulation of PFCC as a core organizational value</li>
-                        <li>Systematic staff education with concrete behavioral expectations</li>
-                        <li>Structured mechanisms for patient and family input</li>
-                        <li>Integration of PFCC principles into operational policies</li>
-                        <li>Consistent measurement and feedback loops</li>
+                <h4 class="font-semibold mb-2">PFCC Approaches Implemented</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white p-4 border rounded">
+                        <h5 class="text-green-700 font-medium mb-2">1. Unrestricted Family Presence</h5>
+                        <p class="text-sm">Parents were welcomed 24/7, with accommodations for one parent to sleep in the room. Siblings were allowed scheduled visits with preparation and support.</p>
+                    </div>
+                    <div class="bg-white p-4 border rounded">
+                        <h5 class="text-green-700 font-medium mb-2">2. Family-Centered Rounds</h5>
+                        <p class="text-sm">Parents participated in daily medical rounds, encouraged to ask questions and share observations about their daughter's condition.</p>
+                    </div>
+                    <div class="bg-white p-4 border rounded">
+                        <h5 class="text-green-700 font-medium mb-2">3. Family Decision Support</h5>
+                        <p class="text-sm">Decision aids and family meetings were used to help parents understand treatment options and participate in care planning.</p>
+                    </div>
+                    <div class="bg-white p-4 border rounded">
+                        <h5 class="text-green-700 font-medium mb-2">4. Parent Participation in Care</h5>
+                        <p class="text-sm">Parents were taught to assist with aspects of Sophia's care, including comfort measures and recognition of distress signals.</p>
+                    </div>
+                </div>
+                
+                <h4 class="font-semibold mb-2">Outcomes</h4>
+                <p class="mb-4">Implementation of PFCC principles yielded several positive outcomes:</p>
+                <ul class="list-disc pl-5 mb-6">
+                    <li class="mb-2">Increased parental confidence and reduced anxiety</li>
+                    <li class="mb-2">Enhanced communication between the healthcare team and family</li>
+                    <li class="mb-2">More efficient response to changes in Sophia's condition due to parental recognition of subtle signs</li>
+                    <li class="mb-2">Smoother transition to home care following discharge</li>
+                    <li class="mb-2">High parental satisfaction with care experience despite the stressful situation</li>
+                </ul>
+                
+                <h4 class="font-semibold mb-2">Lessons Learned</h4>
+                <ol class="list-decimal pl-5 mb-6">
+                    <li class="mb-2">Involving parents as active team members improves quality of care and family experience</li>
+                    <li class="mb-2">Regular family meetings provide opportunities to address questions and concerns in a less hurried environment than daily rounds</li>
+                    <li class="mb-2">Supporting siblings is an often-overlooked aspect of family-centered care in critical care settings</li>
+                    <li class="mb-2">Staff education and support are essential for successful implementation of PFCC in high-acuity environments</li>
+                </ol>
+                
+                <div class="bg-green-50 p-4 rounded-lg mb-6">
+                    <h4 class="font-semibold mb-2">Reflection Questions</h4>
+                    <ol class="list-decimal pl-5">
+                        <li class="mb-2">How might PFCC approaches need to be adapted in emergency situations?</li>
+                        <li class="mb-2">What systems and resources are needed to support meaningful family presence in critical care settings?</li>
+                        <li class="mb-2">How can healthcare providers balance family participation with their own clinical responsibilities?</li>
                     </ol>
                 </div>
                 
-                <h4 class="font-semibold mb-4">Outcomes</h4>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
-                        <h5 class="font-semibold mb-2">Patient Experience</h5>
-                        <ul class="list-disc pl-4 text-sm space-y-1">
-                            <li>Top 1% nationally in patient satisfaction</li>
-                            <li>97% would recommend to friends and family</li>
-                            <li>Significant improvement in communication scores</li>
-                        </ul>
-                    </div>
-                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
-                        <h5 class="font-semibold mb-2">Clinical Outcomes</h5>
-                        <ul class="list-disc pl-4 text-sm space-y-1">
-                            <li>Decreased infection rates</li>
-                            <li>Reduced medication errors</li>
-                            <li>Improved pain management scores</li>
-                        </ul>
-                    </div>
-                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
-                        <h5 class="font-semibold mb-2">Organizational Impact</h5>
-                        <ul class="list-disc pl-4 text-sm space-y-1">
-                            <li>Increased staff satisfaction and retention</li>
-                            <li>National recognition and awards</li>
-                            <li>Increased market share in service area</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <h4 class="font-semibold mb-2">Discussion Questions</h4>
-                <ol class="list-decimal pl-5 mb-6 space-y-2">
-                    <li>What key factors contributed to Bronson Methodist Hospital's successful implementation of PFCC?</li>
-                    <li>How did the physical environment redesign support PFCC principles?</li>
-                    <li>What resistance might have emerged during implementation, and how could it have been addressed?</li>
-                    <li>How could similar strategies be adapted for healthcare settings in Southeast Asia?</li>
-                    <li>What cultural considerations would be important when implementing Bronson's approach in different countries?</li>
-                </ol>
-                
-                <div class="flex justify-between mt-8">
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('case-studies')">Back to Case Studies</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markCaseStudyComplete(1); showSection('quizzes'); startQuiz(1);">Take Related Quiz</button>
+                <div class="text-center mt-6">
+                    <button class="inline-block px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors" onclick="markCaseStudyComplete(1)">Mark Case Study Complete</button>
                 </div>
             </div>
             
-            <!-- Case Study 2 Content -->
-            <div id="case-study2" class="case-study bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Case Study 2: Pediatric ICU Family Involvement Model</h3>
-                
-                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-700 mb-6">
-                    <h4 class="font-semibold mb-2">Overview</h4>
-                    <p>This case study examines how Children's National Medical Center in Washington, DC transformed their Pediatric Intensive Care Unit (PICU) practices to fully integrate families as active participants in care and decision-making.</p>
-                </div>
-                
-                <!-- Additional content would be included here -->
-                
-                <div class="flex justify-between mt-8">
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('case-studies')">Back to Case Studies</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markCaseStudyComplete(2); showSection('quizzes'); startQuiz(2);">Take Related Quiz</button>
-                </div>
-            </div>
+            <!-- Additional case studies would follow the same structure -->
             
-            <!-- Case Studies 3-5 -->
-            <div id="case-study3" class="case-study bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Case Study 3: NICU Design with Patient/Family Input</h3>
-                
-                <!-- Content for Case Study 3 would be included here -->
-                
-                <div class="flex justify-between mt-8">
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('case-studies')">Back to Case Studies</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markCaseStudyComplete(3); showSection('quizzes'); startQuiz(3);">Take Related Quiz</button>
-                </div>
-            </div>
-            
-            <div id="case-study4" class="case-study bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Case Study 4: Emergency Department PFCC Implementation</h3>
-                
-                <!-- Content for Case Study 4 would be included here -->
-                
-                <div class="flex justify-between mt-8">
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('case-studies')">Back to Case Studies</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markCaseStudyComplete(4); showSection('quizzes'); startQuiz(4);">Take Related Quiz</button>
-                </div>
-            </div>
-            
-            <div id="case-study5" class="case-study bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Case Study 5: Chronic Disease Management Partnerships</h3>
-                
-                <!-- Content for Case Study 5 would be included here -->
-                
-                <div class="flex justify-between mt-8">
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('case-studies')">Back to Case Studies</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="markCaseStudyComplete(5); showSection('quizzes'); startQuiz(5);">Take Related Quiz</button>
-                </div>
+            <div class="mt-8 text-center">
+                <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('home')">Return to Course Home</button>
             </div>
         </section>
         
         <!-- Quizzes Section -->
-        <section id="quizzes" class="mb-16" style="display:none;">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Knowledge Assessment</h2>
+        <section id="quizzes" style="display:none;">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4">Knowledge Check Quizzes</h2>
+            <p class="mb-6">Test your understanding of PFCC concepts and principles with these interactive quizzes. You need to score at least 60% to pass each quiz.</p>
             
             <!-- Quiz Selector -->
-            <div id="quiz-selector-container">
-                <p class="mb-6">Test your understanding of Patient and Family-Centered Care concepts with these interactive quizzes:</p>
+            <div id="quiz-selector-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="p-4 bg-purple-50 border-l-4 border-purple-700">
+                        <h3 class="font-semibold">Quiz 1: Foundations of PFCC</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-4">Test your knowledge of PFCC history and core concepts.</p>
+                        <button class="quiz-selector inline-block px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors text-sm" data-quiz="1" onclick="selectQuiz(1)">Start Quiz</button>
+                    </div>
+                </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                        <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                            <h3 class="font-semibold">Quiz 1: PFCC Foundations</h3>
-                        </div>
-                        <div class="p-4">
-                            <p class="text-sm text-gray-600 mb-4">Test your knowledge of basic PFCC principles and concepts.</p>
-                            <button class="quiz-selector inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" data-quiz="1" onclick="startQuiz(1)">Start Quiz</button>
-                        </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="p-4 bg-purple-50 border-l-4 border-purple-700">
+                        <h3 class="font-semibold">Quiz 2: PFCC Core Principles</h3>
                     </div>
-                    
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                        <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                            <h3 class="font-semibold">Quiz 2: Implementation Strategies</h3>
-                        </div>
-                        <div class="p-4">
-                            <p class="text-sm text-gray-600 mb-4">Assess your understanding of how to implement PFCC in healthcare settings.</p>
-                            <button class="quiz-selector inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" data-quiz="2" onclick="startQuiz(2)">Start Quiz</button>
-                        </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-4">Questions about the four core principles of PFCC.</p>
+                        <button class="quiz-selector inline-block px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors text-sm" data-quiz="2" onclick="selectQuiz(2)">Start Quiz</button>
                     </div>
-                    
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                        <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                            <h3 class="font-semibold">Quiz 3: Communication Skills</h3>
-                        </div>
-                        <div class="p-4">
-                            <p class="text-sm text-gray-600 mb-4">Evaluate your knowledge of effective communication in PFCC.</p>
-                            <button class="quiz-selector inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" data-quiz="3" onclick="startQuiz(3)">Start Quiz</button>
-                        </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="p-4 bg-purple-50 border-l-4 border-purple-700">
+                        <h3 class="font-semibold">Quiz 3: Communication Skills for PFCC</h3>
                     </div>
-                    
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                        <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                            <h3 class="font-semibold">Quiz 4: System Design for PFCC</h3>
-                        </div>
-                        <div class="p-4">
-                            <p class="text-sm text-gray-600 mb-4">Test your knowledge of organizational structures that support PFCC.</p>
-                            <button class="quiz-selector inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" data-quiz="4" onclick="startQuiz(4)">Start Quiz</button>
-                        </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-4">Test your knowledge of effective communication strategies.</p>
+                        <button class="quiz-selector inline-block px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors text-sm" data-quiz="3" onclick="selectQuiz(3)">Start Quiz</button>
                     </div>
-                    
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
-                        <div class="p-4 bg-blue-50 border-l-4 border-blue-700">
-                            <h3 class="font-semibold">Quiz 5: Measuring PFCC Outcomes</h3>
-                        </div>
-                        <div class="p-4">
-                            <p class="text-sm text-gray-600 mb-4">Assess your understanding of how to evaluate PFCC implementation.</p>
-                            <button class="quiz-selector inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors text-sm" data-quiz="5" onclick="startQuiz(5)">Start Quiz</button>
-                        </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="p-4 bg-purple-50 border-l-4 border-purple-700">
+                        <h3 class="font-semibold">Quiz 4: System Design for PFCC</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-4">Questions about organizational factors that support PFCC.</p>
+                        <button class="quiz-selector inline-block px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors text-sm" data-quiz="4" onclick="selectQuiz(4)">Start Quiz</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="p-4 bg-purple-50 border-l-4 border-purple-700">
+                        <h3 class="font-semibold">Quiz 5: Measuring PFCC Outcomes</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-4">Test your knowledge of PFCC evaluation approaches.</p>
+                        <button class="quiz-selector inline-block px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors text-sm" data-quiz="5" onclick="selectQuiz(5)">Start Quiz</button>
                     </div>
                 </div>
             </div>
             
             <!-- Quiz Container -->
-            <div id="quiz-container" class="bg-white rounded-lg shadow-md p-6" style="display:none;">
-                <h3 id="quiz-title" class="text-xl font-bold text-blue-800 mb-4">Quiz Title</h3>
-                
-                <div class="mb-6">
-                    <p id="question-progress" class="text-sm text-gray-600">Question 1 of 5</p>
+            <div id="quiz-container" class="bg-white rounded-lg shadow-md p-6 mb-8" style="display:none;">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="quiz-title" class="text-xl font-semibold text-purple-800"></h3>
+                    <div class="text-sm bg-purple-100 text-purple-800 py-1 px-3 rounded-full">
+                        Question <span id="current-question">1</span> of <span id="total-questions">5</span>
+                    </div>
                 </div>
                 
-                <div class="bg-blue-50 p-4 rounded-lg mb-6">
-                    <h4 id="question-text" class="font-semibold mb-2">Question text will appear here</h4>
+                <p id="question-text" class="text-lg mb-6"></p>
+                
+                <div id="quiz-options" class="mb-6">
+                    <!-- Options will be inserted here dynamically -->
                 </div>
                 
-                <div id="options-container" class="mb-6">
-                    <!-- Options will be dynamically inserted here -->
-                </div>
+                <div id="quiz-feedback" class="quiz-feedback mb-6"></div>
                 
-                <div id="feedback-container" class="quiz-feedback mb-6" style="display:none;">
-                    Feedback will appear here
-                </div>
-                
-                <div class="flex justify-between">
-                    <button id="prev-question" class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="prevQuestion()" style="display:none;">Previous Question</button>
-                    <button id="submit-answer" class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="submitAnswer()">Submit Answer</button>
-                    <button id="next-question" class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="nextQuestion()" style="display:none;">Next Question</button>
+                <div class="text-center">
+                    <button id="next-question-btn" class="px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors" style="display:none;" onclick="nextQuestion()">Next Question</button>
                 </div>
             </div>
             
             <!-- Quiz Results -->
             <div id="quiz-results" class="bg-white rounded-lg shadow-md p-6 text-center" style="display:none;">
-                <h3 class="text-xl font-bold text-blue-800 mb-4">Quiz Results</h3>
+                <h3 class="text-xl font-semibold text-purple-800 mb-4">Quiz Results</h3>
                 
-                <div class="bg-blue-50 p-6 rounded-lg mb-6">
-                    <p class="mb-2">You scored:</p>
+                <div class="bg-purple-50 p-6 rounded-lg mb-6">
+                    <p class="text-lg mb-2">You scored:</p>
                     <p class="text-3xl font-bold"><span id="quiz-score">0</span>/<span id="quiz-total">5</span></p>
-                    <p id="quiz-feedback" class="mt-4">Feedback based on your score will appear here.</p>
+                    <p class="text-xl mb-2"><span id="quiz-percentage">0%</span></p>
+                    <p id="quiz-message" class="mt-4"></p>
                 </div>
                 
-                <div class="flex justify-between">
-                    <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="restartQuiz()">Retake Quiz</button>
-                    <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="backToQuizList()">Back to Quizzes</button>
+                <div class="mt-6">
+                    <button class="px-4 py-2 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-colors mr-4" onclick="resetQuiz()">Try Another Quiz</button>
+                    <button class="px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="showSection('home')">Return to Course Home</button>
                 </div>
             </div>
         </section>
-       <!-- Interactive Game Section -->
-<section id="interactive-game" class="mb-16" style="display:none;">
-    <h2 class="text-2xl font-bold text-blue-800 mb-4">PFCC Interactive Scenarios</h2>
-    <p class="mb-6">Apply your PFCC knowledge in these interactive scenarios. Choose the best approach in each situation and receive immediate feedback on your decisions.</p>
-    
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <div id="scenario-container" class="scenario-container mb-6">
-            <!-- Scenario content will be loaded here -->
-        </div>
+
+        <!-- Interactive Game Section -->
+        <section id="interactive-game" style="display:none;">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4">Interactive PFCC Scenarios</h2>
+            <p class="mb-6">Practice applying PFCC principles in realistic healthcare scenarios. Choose the most appropriate approach for each situation.</p>
+            
+            <div id="scenario-container" class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="scenario-title" class="text-xl font-semibold text-blue-800"></h3>
+                    <span id="scenario-counter" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full"></span>
+                </div>
+                
+                <p id="scenario-description" class="mb-6"></p>
+                
+                <div id="scenario-choices" class="mb-6"></div>
+                
+                <div id="feedback-container" class="feedback-container"></div>
+                
+                <div id="reflection-container" class="reflection-container bg-blue-50 p-4 rounded-lg border-l-4 border-blue-700"></div>
+                
+                <div class="mt-6 text-center">
+                    <button id="next-scenario-btn" class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors" style="display:none;">Next Scenario</button>
+                </div>
+            </div>
+        </section>
         
-        <div id="choices-container" class="mb-6">
-            <!-- Choices will be loaded here -->
-        </div>
-        
-        <div id="feedback-container" class="feedback-container">
-            <!-- Feedback will be displayed here -->
-        </div>
-        
-        <div id="reflection-container" class="reflection-container">
-            <h4 class="font-semibold mb-2">Reflection</h4>
-            <p class="mb-2">Take a moment to reflect on this scenario:</p>
-            <textarea id="reflection-text" rows="4" class="w-full p-2 border border-gray-300 rounded" placeholder="Write your reflections here..."></textarea>
-            <button id="save-reflection" class="mt-3 inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors">Save Reflection</button>
-        </div>
-        
-        <div class="mt-6 flex justify-between">
-            <button id="prev-scenario" class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" style="display:none;">Previous Scenario</button>
-            <button id="next-scenario" class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" style="display:none;">Next Scenario</button>
-            <button id="finish-scenarios" class="inline-block px-4 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition-colors" style="display:none;">Complete Scenarios</button>
-        </div>
-    </div>
-    
-    <div class="bg-blue-50 rounded-lg p-6 border-l-4 border-blue-700">
-        <h3 class="text-lg font-semibold mb-2">Learning Through Interactive Scenarios</h3>
-        <p class="mb-4">These scenarios are designed to help you apply PFCC principles in realistic healthcare situations. They challenge you to think critically about how to implement patient and family-centered care in various contexts.</p>
-        <p>As you work through the scenarios, consider how the four core principles of PFCC (Dignity and Respect, Information Sharing, Participation, and Collaboration) apply to each situation.</p>
-    </div>
-</section> 
         <!-- Resources Section -->
-        <section id="resources" class="mb-16" style="display:none;">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Supplementary Resources</h2>
-            <p class="mb-6">Explore these additional resources to deepen your understanding of Patient and Family-Centered Care:</p>
+        <section id="resources" style="display:none;">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4">Additional Resources</h2>
+            <p class="mb-6">Explore these resources to deepen your understanding of Patient and Family-Centered Care.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Resource 1 -->
@@ -1009,11 +646,14 @@
                         <i class="fas fa-file-pdf"></i>
                     </div>
                     <div class="resource-content">
-                        <h3 class="resource-title">IPFCC Core Concepts Guide</h3>
-                        <p class="resource-type"><i class="fas fa-file-pdf"></i> PDF Document</p>
-                        <p class="text-sm text-gray-600 mb-4">Comprehensive guide to the core concepts of PFCC from the Institute for Patient and Family-Centered Care.</p>
+                        <h3 class="resource-title">IPFCC Core Concepts of PFCC</h3>
+                        <div class="resource-type">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF Document</span>
+                        </div>
+                        <p class="text-sm text-gray-600">A comprehensive overview of the core concepts of Patient and Family-Centered Care from the Institute for Patient- and Family-Centered Care.</p>
                         <div class="resource-actions">
-                            <button class="inline-block px-3 py-1 bg-blue-700 text-white text-sm rounded hover:bg-blue-800 transition-colors" onclick="downloadResource('IPFCC_Core_Concepts.pdf')">Download</button>
+                            <a href="#" class="text-blue-700 hover:text-blue-800 font-medium"><i class="fas fa-download mr-1"></i> Download</a>
                         </div>
                     </div>
                 </div>
@@ -1021,14 +661,17 @@
                 <!-- Resource 2 -->
                 <div class="resource-card">
                     <div class="resource-image">
-                        <i class="fas fa-video"></i>
+                        <i class="fas fa-book"></i>
                     </div>
                     <div class="resource-content">
-                        <h3 class="resource-title">Patient Stories: PFCC in Action</h3>
-                        <p class="resource-type"><i class="fas fa-video"></i> Video Series</p>
-                        <p class="text-sm text-gray-600 mb-4">Collection of patient and family testimonials about their experiences with PFCC approaches.</p>
+                        <h3 class="resource-title">Recommended Reading List</h3>
+                        <div class="resource-type">
+                            <i class="fas fa-book"></i>
+                            <span>Bibliography</span>
+                        </div>
+                        <p class="text-sm text-gray-600">A curated list of essential books and articles on PFCC implementation and research findings.</p>
                         <div class="resource-actions">
-                            <button class="inline-block px-3 py-1 bg-blue-700 text-white text-sm rounded hover:bg-blue-800 transition-colors" onclick="downloadResource('Patient_Stories_Videos.zip')">Download</button>
+                            <a href="#" class="text-blue-700 hover:text-blue-800 font-medium"><i class="fas fa-download mr-1"></i> Download</a>
                         </div>
                     </div>
                 </div>
@@ -1040,10 +683,13 @@
                     </div>
                     <div class="resource-content">
                         <h3 class="resource-title">PFCC Implementation Toolkit</h3>
-                        <p class="resource-type"><i class="fas fa-file-alt"></i> Document Collection</p>
-                        <p class="text-sm text-gray-600 mb-4">Practical tools, templates, and checklists for implementing PFCC in various healthcare settings.</p>
+                        <div class="resource-type">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Document</span>
+                        </div>
+                        <p class="text-sm text-gray-600">A practical guide with tools, templates, and strategies for implementing PFCC principles in various healthcare settings.</p>
                         <div class="resource-actions">
-                            <button class="inline-block px-3 py-1 bg-blue-700 text-white text-sm rounded hover:bg-blue-800 transition-colors" onclick="downloadResource('PFCC_Implementation_Toolkit.zip')">Download</button>
+                            <a href="#" class="text-blue-700 hover:text-blue-800 font-medium"><i class="fas fa-download mr-1"></i> Download</a>
                         </div>
                     </div>
                 </div>
@@ -1051,14 +697,17 @@
                 <!-- Resource 4 -->
                 <div class="resource-card">
                     <div class="resource-image">
-                        <i class="fas fa-book"></i>
+                        <i class="fas fa-link"></i>
                     </div>
                     <div class="resource-content">
-                        <h3 class="resource-title">Recommended Reading List</h3>
-                        <p class="resource-type"><i class="fas fa-book"></i> Bibliography</p>
-                        <p class="text-sm text-gray-600 mb-4">Curated list of books, articles, and research papers on PFCC principles and implementation.</p>
+                        <h3 class="resource-title">External Resources and Organizations</h3>
+                        <div class="resource-type">
+                            <i class="fas fa-link"></i>
+                            <span>Web Links</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Links to key organizations, research centers, and online resources focused on advancing PFCC practices.</p>
                         <div class="resource-actions">
-                            <button class="inline-block px-3 py-1 bg-blue-700 text-white text-sm rounded hover:bg-blue-800 transition-colors" onclick="downloadResource('PFCC_Reading_List.pdf')">Download</button>
+                            <a href="#" class="text-blue-700 hover:text-blue-800 font-medium"><i class="fas fa-external-link-alt mr-1"></i> View Online</a>
                         </div>
                     </div>
                 </div>
@@ -1066,123 +715,101 @@
         </section>
         
         <!-- Certificate Section -->
-        <section id="certificate" class="mb-16" style="display:none;">
+        <section id="certificate" style="display:none;">
             <h2 class="text-2xl font-bold text-blue-800 mb-4">Course Certificate</h2>
             
             <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-                <p class="mb-6">Upon completing all required components of the course, you will be eligible to receive a certificate of completion.</p>
-                
-                <div class="bg-blue-50 p-4 rounded-lg mb-6">
-                    <h3 class="font-semibold mb-2">Certificate Requirements</h3>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li>Complete all 5 lectures</li>
-                        <li>Complete all 5 case studies</li>
-                        <li>Pass all 5 quizzes with a score of at least 60%</li>
+                <div class="mb-6">
+                    <p class="mb-4">To earn your certificate of completion, you must complete all of the following:</p>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li class="mb-2">All 5 lectures</li>
+                        <li class="mb-2">All 5 case studies</li>
+                        <li class="mb-2">All 5 quizzes (with at least 60% score on each)</li>
+                        <li class="mb-2">The interactive scenario game</li>
                     </ul>
+                    <p>Your progress is tracked automatically as you complete each section of the course.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="participant-name" class="block text-sm font-medium text-gray-700 mb-2">Enter Your Full Name (as it should appear on the certificate)</label>
+                    <input type="text" id="participant-name" class="w-full md:w-1/2 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Full Name">
                 </div>
                 
                 <div class="text-center">
-                    <button id="view-certificate-button" class="inline-block px-6 py-3 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 transition-colors text-lg cursor-not-allowed text-gray-400" onclick="generateCertificate()" disabled>Generate Certificate</button>
-                    <p class="text-sm text-gray-600 mt-2">Complete all required components to enable this button</p>
+                    <button id="view-certificate-button" class="inline-block px-6 py-3 bg-blue-700 text-gray-400 rounded-lg font-bold cursor-not-allowed text-lg" disabled onclick="generateCertificate()">Generate Certificate</button>
+                    <p class="mt-4 text-sm text-gray-600">This button will become active once you've completed all required components.</p>
                 </div>
             </div>
         </section>
     </div>
     
     <!-- Modals -->
-    <!-- Welcome Modal -->
     <div id="welcome-modal" class="modal">
         <div class="modal-content">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Welcome to the PFCC Course!</h2>
-            
-            <p class="mb-4">Thank you for enrolling in our Patient and Family-Centered Care course. We're excited to have you join our community of healthcare professionals committed to improving patient care through PFCC principles.</p>
-            
-            <div class="bg-blue-50 p-4 rounded-lg mb-4">
-                <h3 class="font-semibold mb-2">Getting Started</h3>
-                <ol class="list-decimal pl-5 space-y-1">
-                    <li>Explore the five comprehensive lectures on PFCC principles and practices</li>
-                    <li>Review real-world case studies from diverse healthcare settings</li>
-                    <li>Test your knowledge with interactive quizzes</li>
-                    <li>Access supplementary resources to deepen your understanding</li>
-                    <li>Complete the course to earn your certificate</li>
-                </ol>
-            </div>
-            
-            <p class="mb-4">Your progress will be automatically saved as you navigate through the course. You can track your progress on the progress bar and generate a certificate once you've completed the required components.</p>
-            
+            <h2 class="text-xl font-bold text-blue-800 mb-4">Welcome to the PFCC Course!</h2>
+            <p class="mb-4">Thank you for joining our Patient and Family-Centered Care course. This interactive learning experience will provide you with the knowledge and skills to implement PFCC principles in your practice.</p>
+            <p class="mb-4">The course includes:</p>
+            <ul class="list-disc pl-5 mb-4">
+                <li class="mb-2">Five comprehensive lectures</li>
+                <li class="mb-2">Real-world case studies</li>
+                <li class="mb-2">Knowledge check quizzes</li>
+                <li class="mb-2">Interactive scenario-based game</li>
+                <li class="mb-2">Additional resources</li>
+            </ul>
+            <p class="mb-4">Your progress will be saved automatically, allowing you to complete the course at your own pace.</p>
             <div class="text-center">
-                <button class="inline-block px-6 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="closeModal('welcome-modal')">Start Learning</button>
+                <button class="px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="closeModal('welcome-modal')">Get Started</button>
             </div>
         </div>
     </div>
     
-    <!-- Lecture Completed Modal -->
     <div id="lecture-completed-modal" class="modal">
         <div class="modal-content">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Lecture Completed!</h2>
-            
-            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 mb-4">
-                <p>Congratulations! You have successfully completed this lecture.</p>
-            </div>
-            
-            <p class="mb-4">Your progress has been saved. Continue exploring other lectures or move on to case studies and quizzes to deepen your understanding.</p>
-            
+            <h2 class="text-xl font-bold text-blue-800 mb-4">Lecture Completed!</h2>
+            <p class="mb-4">Great job! You've completed this lecture module.</p>
+            <p class="mb-4">Continue exploring other lectures, case studies, and quizzes to deepen your understanding of PFCC principles.</p>
             <div class="text-center">
-                <button class="inline-block px-6 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="closeModal('lecture-completed-modal')">Continue</button>
+                <button class="px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="closeModal('lecture-completed-modal')">Continue</button>
             </div>
         </div>
     </div>
     
-    <!-- Case Study Completed Modal -->
     <div id="case-completed-modal" class="modal">
         <div class="modal-content">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Case Study Completed!</h2>
-            
-            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 mb-4">
-                <p>Congratulations! You have successfully completed this case study.</p>
-            </div>
-            
-            <p class="mb-4">Your progress has been saved. Would you like to take the related quiz to test your understanding of the concepts covered in this case study?</p>
-            
-            <div class="flex justify-between">
-                <button class="inline-block px-4 py-2 border border-blue-700 text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors" onclick="closeModal('case-completed-modal')">Continue Later</button>
-                <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="closeModal('case-completed-modal'); showSection('quizzes');">Go to Quizzes</button>
+            <h2 class="text-xl font-bold text-green-800 mb-4">Case Study Completed!</h2>
+            <p class="mb-4">Excellent work! You've completed this case study.</p>
+            <p class="mb-4">Case studies provide valuable context for how PFCC principles apply in real-world healthcare settings.</p>
+            <div class="text-center">
+                <button class="px-4 py-2 bg-green-700 text-white rounded font-medium hover:bg-green-800 transition-colors" onclick="closeModal('case-completed-modal')">Continue</button>
             </div>
         </div>
     </div>
     
-    <!-- Certificate Modal -->
     <div id="certificate-modal" class="modal">
         <div class="modal-content">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Course Certificate</h2>
-            
-            <div id="certificate" class="border-8 border-blue-700 p-8 text-center mb-6">
-                <div class="mb-2">
-                    <img src="https://via.placeholder.com/150x50?text=PFCC+Logo" alt="PFCC Course Logo" class="mx-auto">
-                </div>
-                <h3 class="text-3xl font-bold text-blue-800 mb-2">Certificate of Completion</h3>
-                <p class="text-lg mb-6">This certifies that</p>
-                <p id="certificate-name" class="text-3xl font-bold text-gray-800 my-6">Dr. Avneet Kaur</p>
-                <p class="text-xl mb-2">has successfully completed the</p>
-                <p class="text-2xl font-bold text-blue-800 mb-6">Patient and Family-Centered Care Course</p>
-                <p class="text-lg mb-8">Demonstrating proficiency in PFCC principles, implementation strategies, and best practices</p>
-                <div class="flex justify-between items-end mt-12">
-                    <div class="text-left">
-                        <p class="text-sm mb-1">Date Issued:</p>
-                        <p id="certificate-date" class="font-semibold">April 4, 2025</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="signature-name">Dr. Sarah Johnson</p>
-                        <p class="text-sm">Course Director</p>
+            <div class="bg-white border-8 border-blue-100 p-8 text-center">
+                <div class="border-4 border-blue-700 p-8">
+                    <div class="mb-4">
+                        <img src="https://via.placeholder.com/150x50?text=PFCC+COURSE" alt="Course Logo" class="mx-auto mb-4">
+                        <h2 class="text-3xl font-bold mb-2">Certificate of Completion</h2>
+                        <p class="text-lg">This certifies that</p>
+                        <p id="certificate-name" class="text-2xl font-bold my-4 signature-name">Participant Name</p>
+                        <p class="text-lg">has successfully completed the</p>
+                        <p class="text-xl font-semibold my-2">Patient and Family-Centered Care Course</p>
+                        <p class="text-lg">demonstrating knowledge and understanding of PFCC principles and practices</p>
+                        <p id="certificate-date" class="mt-6 text-lg">April 5, 2023</p>
                     </div>
                 </div>
             </div>
-            <div class="mt-6 text-center">
-                <button class="inline-block px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors" onclick="printCertificate()">Print Certificate</button>
+            <div class="text-center mt-6">
+                <button class="px-4 py-2 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors mr-4" onclick="printCertificate()">Print Certificate</button>
+                <button class="px-4 py-2 bg-gray-700 text-white rounded font-medium hover:bg-gray-800 transition-colors" onclick="closeModal('certificate-modal')">Close</button>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="script.js"></script>
+    <script src="components/game.js"></script>
 </body>
 </html>
