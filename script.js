@@ -1,24 +1,35 @@
 // Main Navigation and Section Display
 let currentProgress = 0;
-const totalRequiredItems = 15; // 5 lectures + 5 case studies + 5 quizzes
+const totalRequiredItems = 16; // 5 lectures + 5 case studies + 5 quizzes + 1 game
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
     initializeProgressTracking();
     updateProgressBar();
     
-    // Set active navigation link
+    // Set active navigation link and prevent default behavior
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Explicitly prevent default behavior
+            
+            // Get the section ID from the href attribute
+            const sectionId = this.getAttribute('href').substring(1);
+            
+            // Remove active class from all links
             navLinks.forEach(l => {
                 l.classList.remove('active');
                 l.classList.remove('border-blue-700');
                 l.classList.add('border-transparent');
             });
+            
+            // Add active class to clicked link
             this.classList.add('active');
             this.classList.add('border-blue-700');
             this.classList.remove('border-transparent');
+            
+            // Show the selected section
+            showSection(sectionId);
         });
     });
     
@@ -33,6 +44,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const sectionId = window.location.hash.substring(1);
         showSection(sectionId);
     }
+    
+    // Add event listeners to buttons that change sections
+    document.querySelectorAll('[onclick*="showSection"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        const sectionMatch = functionCall.match(/showSection\(['"]([^'"]+)['"]\)/);
+        
+        if (sectionMatch && sectionMatch[1]) {
+            const sectionId = sectionMatch[1];
+            
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(sectionId);
+            });
+        }
+    });
 });
 
 // Show a specific section and hide others
@@ -49,11 +76,13 @@ function showSection(sectionId) {
         // Handle specific sections
         if (sectionId === 'quizzes') {
             initializeCurrentQuiz();
+        } else if (sectionId === 'interactive-game' && typeof loadScenario === 'function') {
+            loadScenario(0);
         }
     }
     
-    // Update URL hash
-    window.location.hash = sectionId;
+    // Update URL hash without causing a page jump
+    history.replaceState(null, null, '#' + sectionId);
     
     // Scroll to top
     window.scrollTo({
@@ -83,6 +112,7 @@ function initializeProgressTracking() {
     const lectureProgress = JSON.parse(localStorage.getItem('lectureProgress') || '{}');
     const caseProgress = JSON.parse(localStorage.getItem('caseProgress') || '{}');
     const quizProgress = JSON.parse(localStorage.getItem('quizProgress') || '{}');
+    const gameProgress = JSON.parse(localStorage.getItem('gameProgress') || '{}');
     
     // Update UI to show progress
     for (const lectureId in lectureProgress) {
@@ -112,6 +142,14 @@ function initializeProgressTracking() {
         }
     }
     
+    // Add check to game menu item if completed
+    if (gameProgress.completed) {
+        const gameElement = document.querySelector('a[href="#interactive-game"]');
+        if (gameElement && !gameElement.innerHTML.includes('fa-check-circle')) {
+            gameElement.innerHTML += ' <i class="fas fa-check-circle text-green-500"></i>';
+        }
+    }
+    
     updateProgressBar();
     checkCertificateEligibility();
 }
@@ -120,10 +158,12 @@ function updateProgressBar() {
     const lectureProgress = JSON.parse(localStorage.getItem('lectureProgress') || '{}');
     const caseProgress = JSON.parse(localStorage.getItem('caseProgress') || '{}');
     const quizProgress = JSON.parse(localStorage.getItem('quizProgress') || '{}');
+    const gameProgress = JSON.parse(localStorage.getItem('gameProgress') || '{}');
     
     let completedLectures = 0;
     let completedCases = 0;
     let completedQuizzes = 0;
+    let completedGame = gameProgress.completed ? 1 : 0;
     
     for (const lectureId in lectureProgress) {
         if (lectureProgress[lectureId].completed) completedLectures++;
@@ -137,7 +177,7 @@ function updateProgressBar() {
         if (quizProgress[quizId].completed) completedQuizzes++;
     }
     
-    currentProgress = completedLectures + completedCases + completedQuizzes;
+    currentProgress = completedLectures + completedCases + completedQuizzes + completedGame;
     
     const progressPercent = (currentProgress / totalRequiredItems) * 100;
     document.getElementById('progress-fill').style.width = `${progressPercent}%`;
@@ -151,11 +191,11 @@ function checkCertificateEligibility() {
     if (currentProgress >= totalRequiredItems) {
         certificateButton.disabled = false;
         certificateButton.classList.remove('text-gray-400', 'cursor-not-allowed');
-        certificateButton.classList.add('text-blue-700', 'hover:text-blue-800');
+        certificateButton.classList.add('text-white', 'hover:bg-blue-800');
     } else {
         certificateButton.disabled = true;
         certificateButton.classList.add('text-gray-400', 'cursor-not-allowed');
-        certificateButton.classList.remove('text-blue-700', 'hover:text-blue-800');
+        certificateButton.classList.remove('text-white', 'hover:bg-blue-800');
     }
 }
 
@@ -385,337 +425,117 @@ function initializeCurrentQuiz() {
     document.getElementById('quiz-results').style.display = 'none';
 }
 
-function startQuiz(quizId) {
+function selectQuiz(quizId) {
     currentQuiz = quizId;
-    currentQuestion = 0;
-    quizScore = 0;
     
     // Hide selector and show quiz
     document.getElementById('quiz-selector-container').style.display = 'none';
     document.getElementById('quiz-container').style.display = 'block';
-    document.getElementById('quiz-results').style.display = 'none';
     
-    // Load first question
-    loadQuestion();
-}
-
-function loadQuestion() {
-    const quizData = quizzes[currentQuiz];
-    if (!quizData) return;
-    
-    const question = quizData.questions[currentQuestion];
-    if (!question) {
-        // End of quiz
-        showQuizResults();
-        return;
-    }
-    
-    const quizTitle = document.getElementById('quiz-title');
-    const questionText = document.getElementById('question-text');
-    const optionsContainer = document.getElementById('options-container');
-    const questionProgress = document.getElementById('question-progress');
-    const feedbackContainer = document.getElementById('feedback-container');
-    
-    // Set title and question
-    if (quizTitle) quizTitle.textContent = quizData.title;
-    if (questionText) questionText.textContent = question.question;
-    
-    // Update progress
-    if (questionProgress) {
-        questionProgress.textContent = `Question ${currentQuestion + 1} of ${quizData.questions.length}`;
-    }
-    
-    // Hide feedback
-    if (feedbackContainer) {
-        feedbackContainer.style.display = 'none';
-        feedbackContainer.className = 'quiz-feedback';
-    }
-    
-    // Clear previous options
-    if (optionsContainer) {
-        optionsContainer.innerHTML = '';
-        
-        // Add options
-        question.options.forEach((option, index) => {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'quiz-option';
-            optionDiv.textContent = option;
-            optionDiv.setAttribute('data-index', index);
-            optionDiv.onclick = function() {
-                selectOption(this);
-            };
-            optionsContainer.appendChild(optionDiv);
-        });
-    }
-    
-    // Show/hide navigation buttons
-    document.getElementById('prev-question').style.display = currentQuestion > 0 ? 'block' : 'none';
-    document.getElementById('next-question').style.display = 'none';
-    document.getElementById('submit-answer').style.display = 'block';
-}
-
-function selectOption(selectedOption) {
-    // Remove selected class from all options
-    const options = document.querySelectorAll('.quiz-option');
-    options.forEach(option => {
-        option.classList.remove('selected');
-    });
-    
-    // Add selected class to clicked option
-    selectedOption.classList.add('selected');
-}
-
-function submitAnswer() {
-    const selectedOption = document.querySelector('.quiz-option.selected');
-    if (!selectedOption) {
-        alert('Please select an answer');
-        return;
-    }
-    
-    const selectedIndex = parseInt(selectedOption.getAttribute('data-index'));
-    const quizData = quizzes[currentQuiz];
-    const question = quizData.questions[currentQuestion];
-    const feedbackContainer = document.getElementById('feedback-container');
-    
-    // Check if answer is correct
-    const isCorrect = selectedIndex === question.correctAnswer;
-    
-    // Update score if correct
-    if (isCorrect) {
-        quizScore++;
-    }
-    
-    // Show feedback
-    if (feedbackContainer) {
-        feedbackContainer.textContent = question.explanation || (isCorrect ? 'Correct!' : 'Incorrect.');
-        feedbackContainer.classList.add(isCorrect ? 'correct' : 'incorrect');
-        feedbackContainer.style.display = 'block';
-    }
-    
-    // If incorrect, highlight correct answer
-    if (!isCorrect) {
-        const options = document.querySelectorAll('.quiz-option');
-        options[question.correctAnswer].classList.add('correct-answer-highlight');
-    }
-    
-    // Show next button, hide submit button
-    document.getElementById('next-question').style.display = 'block';
-    document.getElementById('submit-answer').style.display = 'none';
-}
-
-function nextQuestion() {
-    currentQuestion++;
-    if (currentQuestion >= quizzes[currentQuiz].questions.length) {
-        showQuizResults();
-    } else {
-        loadQuestion();
-    }
-}
-
-function prevQuestion() {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        loadQuestion();
-    }
-}
-
-function showQuizResults() {
-    // Hide quiz container
-    document.getElementById('quiz-container').style.display = 'none';
-    
-    // Show results
-    const resultsContainer = document.getElementById('quiz-results');
-    if (resultsContainer) {
-        resultsContainer.style.display = 'block';
-        
-        const quizData = quizzes[currentQuiz];
-        const totalQuestions = quizData.questions.length;
-        const scorePercent = Math.round((quizScore / totalQuestions) * 100);
-        
-        // Update result text and percentage
-        document.getElementById('quiz-score').textContent = quizScore;
-        document.getElementById('quiz-total').textContent = totalQuestions;
-        
-        // Determine feedback based on score
-        let feedbackText = '';
-        if (scorePercent >= 90) {
-            feedbackText = 'Excellent! You have a strong understanding of PFCC concepts.';
-        } else if (scorePercent >= 70) {
-            feedbackText = 'Good job! You understand most PFCC concepts, but might benefit from reviewing some areas.';
-        } else {
-            feedbackText = 'You might want to review the course materials again to strengthen your understanding of PFCC concepts.';
-        }
-        
-        document.getElementById('quiz-feedback').textContent = feedbackText;
-        
-        // Mark quiz as completed if score is 60% or higher
-        if (scorePercent >= 60) {
-            markQuizComplete(currentQuiz, scorePercent);
-        }
-    }
-}
-
-function restartQuiz() {
+    // Reset quiz state
     currentQuestion = 0;
     quizScore = 0;
-    loadQuestion();
     
-    // Show quiz container, hide results
-    document.getElementById('quiz-container').style.display = 'block';
-    document.getElementById('quiz-results').style.display = 'none';
+    // Load the first question
+    showQuestion();
 }
 
-function backToQuizList() {
-    // Hide quiz and results, show selector
-    document.getElementById('quiz-selector-container').style.display = 'block';
-    document.getElementById('quiz-container').style.display = 'none';
-    document.getElementById('quiz-results').style.display = 'none';
-}
-
-// Certificate Generation
-function generateCertificate() {
-    // Set certificate details
-    document.getElementById('certificate-name').textContent = "Dr. Avneet Kaur";
-    document.getElementById('certificate-id').textContent = "PFCC-" + Math.floor(100000 + Math.random() * 900000);
-    document.getElementById('certificate-date').textContent = new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
-    
-    // Show certificate modal
-    showModal('certificate-modal');
-}
-
-function printCertificate() {
-    // Create a printable version
-    const certificateContent = document.getElementById('certificate').innerHTML;
-    const printWindow = window.open('', '_blank');
-    
-    printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>PFCC Course Certificate</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 40px; }
-                .certificate { border: 20px solid #1a56db; padding: 40px; text-align: center; position: relative; }
-                .certificate-title { font-size: 2.5rem; color: #1a56db; margin-bottom: 2rem; }
-                .certificate-name { font-size: 2rem; font-weight: bold; color: #2d3748; margin: 2rem 0; }
-                .signature-line { margin-top: 4rem; border-top: 1px solid #000; display: inline-block; padding-top: 5px; }
-            </style>
-        </head>
-        <body>
-            <div class="certificate">
-                ${certificateContent}
-            </div>
-            <script>
-                window.onload = function() { window.print(); }
-            </script>
-        </body>
-        </html>
-    `);
-    
-    printWindow.document.close();
-}
-
-// Define quiz data
-const quizzes = {
+const quizData = {
     1: {
         title: "Quiz 1: Foundations of PFCC",
         questions: [
             {
                 question: "Which of the following best defines Patient and Family-Centered Care?",
                 options: [
-                    "A model where healthcare providers make all decisions for patients",
-                    "An approach to healthcare that forms partnerships among practitioners, patients, and families",
-                    "A system where family members take primary responsibility for patient care",
-                    "A method focused exclusively on patient autonomy and independence"
+                    "A healthcare approach that places the physician at the center of all decisions",
+                    "An approach that partners with patients and families in planning, delivery, and evaluation of healthcare",
+                    "A model that prioritizes hospital efficiency over patient preferences",
+                    "A system where family members make all healthcare decisions for patients"
                 ],
                 correctAnswer: 1,
-                explanation: "PFCC is defined as an approach to the planning, delivery, and evaluation of healthcare that forms mutually beneficial partnerships among patients, families, and healthcare practitioners."
+                explanation: "Patient and Family-Centered Care is an approach to healthcare that forms partnerships with patients and families in the planning, delivery, and evaluation of care. This definition acknowledges the essential role of collaboration while maintaining that patients and families are at the center of the care process."
             },
             {
-                question: "Which is NOT one of the four core principles of PFCC?",
+                question: "Which is NOT one of the core principles of PFCC?",
                 options: [
                     "Dignity and Respect",
                     "Information Sharing",
-                    "Cost Efficiency",
-                    "Participation"
-                ],
-                correctAnswer: 2,
-                explanation: "The four core principles of PFCC are Dignity and Respect, Information Sharing, Participation, and Collaboration. While cost efficiency may be a positive outcome of PFCC, it is not one of the core principles."
-            },
-            {
-                question: "According to historical development, when did the Institute of Medicine identify patient-centered care as one of six aims for healthcare improvement?",
-                options: [
-                    "1970s",
-                    "1980s",
-                    "1990s",
-                    "2000s"
+                    "Participation",
+                    "Provider Authority"
                 ],
                 correctAnswer: 3,
-                explanation: "The Institute of Medicine (now the National Academy of Medicine) identified patient-centered care as one of six aims for healthcare improvement in its landmark 2001 report 'Crossing the Quality Chasm.'"
+                explanation: "The core principles of PFCC are Dignity and Respect, Information Sharing, Participation, and Collaboration. Provider Authority is not a principle of PFCC, as it contradicts the collaborative nature of patient-centered care."
             },
             {
-                question: "Which of the following is an evidence-based outcome of implementing PFCC?",
+                question: "How does PFCC primarily view family members?",
                 options: [
-                    "Increased healthcare costs",
-                    "Reduced patient engagement",
-                    "Improved clinical outcomes",
-                    "Decreased provider job satisfaction"
-                ],
-                correctAnswer: 2,
-                explanation: "Research has consistently demonstrated that PFCC implementation is associated with improved clinical outcomes, including better adherence to treatment plans, reduced readmissions, and improved health status."
-            },
-            {
-                question: "In the context of PFCC, what does 'dignity and respect' primarily refer to?",
-                options: [
-                    "Allowing patients unrestricted access to all medical records",
-                    "Honoring patient and family perspectives and choices",
-                    "Ensuring all patients receive identical treatment regardless of background",
-                    "Providing luxury accommodations in healthcare facilities"
+                    "As visitors who should have limited involvement in care",
+                    "As essential members of the care team and partners in care",
+                    "As potential disruptions to efficient healthcare delivery",
+                    "As secondary to the patient-provider relationship"
                 ],
                 correctAnswer: 1,
-                explanation: "Dignity and Respect in PFCC refers to listening to and honoring patient and family perspectives and choices, incorporating their knowledge, values, beliefs, and cultural backgrounds into the planning and delivery of care."
+                explanation: "PFCC views family members as essential members of the care team and partners in care, not as visitors. This perspective recognizes the vital support role that families play and their knowledge of the patient's preferences, values, and needs."
+            },
+            {
+                question: "Which historical development most directly influenced the emergence of PFCC?",
+                options: [
+                    "The rise of medical specialization",
+                    "The consumer rights movement and patient advocacy",
+                    "The development of electronic health records",
+                    "The expansion of insurance coverage"
+                ],
+                correctAnswer: 1,
+                explanation: "The consumer rights movement and patient advocacy of the 1960s and 1970s most directly influenced the emergence of PFCC by emphasizing the rights of patients to be informed and involved in their care decisions. This social context created demand for more patient-centered approaches to healthcare."
+            },
+            {
+                question: "What is the primary goal of PFCC?",
+                options: [
+                    "To reduce healthcare costs",
+                    "To improve patient and family experience of care",
+                    "To decrease provider workload",
+                    "To increase hospital efficiency"
+                ],
+                correctAnswer: 1,
+                explanation: "The primary goal of PFCC is to improve patient and family experience of care by creating partnerships that enhance quality and safety while respecting individual values, preferences, and needs. While PFCC may also impact costs and efficiency, these are secondary to the focus on experience of care."
             }
         ]
     },
     2: {
-        title: "Quiz 2: Core Principles in Practice",
+        title: "Quiz 2: PFCC Core Principles",
         questions: [
             {
-                question: "Which principle is demonstrated when healthcare providers incorporate patient values and preferences into care plans?",
+                question: "Which of the following best demonstrates the principle of 'dignity and respect' in PFCC?",
                 options: [
-                    "Information Sharing",
-                    "Dignity and Respect",
-                    "Participation",
-                    "Collaboration"
+                    "Making decisions for patients to save them from difficult choices",
+                    "Asking patients about their values and preferences before developing a care plan",
+                    "Allowing only certified medical interpreters to communicate with non-English speaking patients",
+                    "Following standardized protocols regardless of individual patient circumstances"
                 ],
                 correctAnswer: 1,
-                explanation: "Incorporating patient values and preferences into care plans demonstrates the principle of Dignity and Respect, which involves honoring patient and family perspectives and choices."
+                explanation: "Asking patients about their values and preferences before developing a care plan demonstrates the principle of dignity and respect by acknowledging that patient perspectives are central to care planning. This approach honors patient autonomy and recognizes that patients are experts in their own lives."
             },
             {
-                question: "Which of the following best demonstrates the 'participation' principle of PFCC?",
+                question: "What does 'information sharing' in PFCC require of healthcare providers?",
                 options: [
-                    "Providers sharing complete diagnostic information",
-                    "Families being allowed to visit during specified hours",
-                    "Patients choosing their level of involvement in care activities",
-                    "Hospital administrators consulting with patient advisors"
-                ],
-                correctAnswer: 2,
-                explanation: "The participation principle involves patients and families being encouraged and supported to participate in care and decision-making at the level they choose. This empowers patients to determine their own involvement."
-            },
-            {
-                question: "How is the principle of 'information sharing' best implemented in practice?",
-                options: [
-                    "Providing all medical information regardless of patient preference",
-                    "Sharing comprehensive information in ways that are affirming and useful",
-                    "Limiting information to prevent patient anxiety",
-                    "Directing all communication through a designated family spokesperson"
+                    "Limiting information to prevent overwhelming patients",
+                    "Providing complete, accurate information that patients and families can understand",
+                    "Sharing information only with the legally designated decision-maker",
+                    "Withholding concerning information that might cause distress"
                 ],
                 correctAnswer: 1,
-                explanation: "Information sharing is best implemented by communicating complete and unbiased information with patients and families in ways that are affirming and useful, ensuring they receive timely, accurate information to effectively participate in care and decision-making."
+                explanation: "Information sharing in PFCC requires providing complete and accurate information in ways that patients and families can understand. This principle is based on the understanding that access to information is necessary for patients to participate meaningfully in their care decisions."
+            },
+            {
+                question: "The 'participation' principle of PFCC is best supported by which of the following practices?",
+                options: [
+                    "Having family members sign consent forms on behalf of patients",
+                    "Encouraging patients and families to participate in care discussions and decisions at their desired level",
+                    "Requiring family members to assist with basic care to reduce staffing needs",
+                    "Allowing patients to make decisions only if they align with provider recommendations"
+                ],
+                correctAnswer: 1,
+                explanation: "Encouraging patients and families to participate in care discussions and decisions at their desired level best supports the participation principle. This practice respects that different patients may want different levels of involvement, while still creating opportunities for meaningful engagement."
             },
             {
                 question: "In a PFCC approach, how should healthcare providers respond to family members who want to be present during procedures?",
@@ -802,7 +622,7 @@ const quizzes = {
         ]
     },
     4: {
-        title: "Quiz 4: Building Systems to Support PFCC",
+        title: "Quiz 4: System Design for PFCC",
         questions: [
             {
                 question: "Which organizational policy best supports family presence in healthcare settings?",
@@ -906,25 +726,318 @@ const quizzes = {
                     "Focusing on measures where performance is already strong"
                 ],
                 correctAnswer: 1,
-                explanation: "Using data to identify and address specific improvement opportunities creates a continuous improvement cycle. This approach transforms measurement from a passive activity into an active driver of better care."
+                explanation: "Using data to identify and address specific improvement opportunities creates a continuous improvement cycle that advances PFCC implementation. This approach ensures that measurement leads to meaningful action."
             },
             {
-                question: "Which stakeholders should be involved in designing PFCC measurement approaches?",
+                question: "Which approach to measuring outcomes best aligns with PFCC principles?",
                 options: [
-                    "Quality improvement staff only",
-                    "Executive leadership only",
-                    "Clinical staff only",
-                    "Patients, families, staff, and leadership together"
+                    "Prioritizing measures that matter to administrators and payers",
+                    "Focusing exclusively on clinical outcomes",
+                    "Including measures that patients and families identify as important",
+                    "Using only measures that can be collected without patient input"
                 ],
-                correctAnswer: 3,
-                explanation: "Including patients, families, staff, and leadership in measurement design ensures that metrics reflect what matters to all stakeholders. This collaborative approach embodies the PFCC principle of partnership."
+                correctAnswer: 2,
+                explanation: "Including measures that patients and families identify as important aligns with PFCC principles by respecting their perspectives on what constitutes valuable outcomes. This approach ensures evaluation focuses on what matters most to those receiving care."
             }
         ]
     }
 };
 
-// Resource Functions
-function downloadResource(resourceName) {
-    alert(`In a production environment, this would download the file: ${resourceName}`);
-    // In actual implementation, this would trigger a file download
+function showQuestion() {
+    const quizData = window.quizData[currentQuiz];
+    const questionData = quizData.questions[currentQuestion];
+    
+    // Update quiz title and question
+    document.getElementById('quiz-title').textContent = quizData.title;
+    document.getElementById('current-question').textContent = currentQuestion + 1;
+    document.getElementById('total-questions').textContent = quizData.questions.length;
+    document.getElementById('question-text').textContent = questionData.question;
+    
+    // Clear previous options
+    const optionsContainer = document.getElementById('quiz-options');
+    optionsContainer.innerHTML = '';
+    
+    // Add new options
+    questionData.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'quiz-option';
+        optionDiv.textContent = option;
+        optionDiv.setAttribute('data-index', index);
+        optionDiv.onclick = function() {
+            selectAnswer(index);
+        };
+        optionsContainer.appendChild(optionDiv);
+    });
+    
+    // Reset feedback
+    document.getElementById('quiz-feedback').style.display = 'none';
+    document.getElementById('quiz-feedback').className = 'quiz-feedback';
+    
+    // Reset buttons
+    document.getElementById('next-question-btn').style.display = 'none';
 }
+
+function selectAnswer(answerIndex) {
+    const questionData = quizData[currentQuiz].questions[currentQuestion];
+    const correctIndex = questionData.correctAnswer;
+    const options = document.querySelectorAll('.quiz-option');
+    const feedbackElement = document.getElementById('quiz-feedback');
+    
+    // Disable all options
+    options.forEach(option => {
+        option.onclick = null;
+        option.classList.add('pointer-events-none');
+    });
+    
+    // Mark selected option
+    options[answerIndex].classList.add('selected');
+    
+    // Highlight correct answer if wrong choice was made
+    if (answerIndex !== correctIndex) {
+        options[correctIndex].classList.add('correct-answer-highlight');
+    }
+    
+    // Show feedback
+    feedbackElement.textContent = questionData.explanation;
+    if (answerIndex === correctIndex) {
+        feedbackElement.classList.add('correct');
+        quizScore++;
+    } else {
+        feedbackElement.classList.add('incorrect');
+    }
+    feedbackElement.style.display = 'block';
+    
+    // Show next button
+    document.getElementById('next-question-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    
+    if (currentQuestion < quizData[currentQuiz].questions.length) {
+        showQuestion();
+    } else {
+        showQuizResults();
+    }
+}
+
+function showQuizResults() {
+    const totalQuestions = quizData[currentQuiz].questions.length;
+    const percentageScore = Math.round((quizScore / totalQuestions) * 100);
+    
+    // Hide quiz container
+    document.getElementById('quiz-container').style.display = 'none';
+    
+    // Show results
+    document.getElementById('quiz-results').style.display = 'block';
+    document.getElementById('quiz-score').textContent = quizScore;
+    document.getElementById('quiz-total').textContent = totalQuestions;
+    document.getElementById('quiz-percentage').textContent = percentageScore + '%';
+    
+    // Set message based on score
+    const messageElement = document.getElementById('quiz-message');
+    if (percentageScore >= 80) {
+        messageElement.textContent = 'Excellent! You have a strong understanding of this topic.';
+        messageElement.className = 'text-green-700';
+    } else if (percentageScore >= 60) {
+        messageElement.textContent = 'Good job! You've grasped most of the key concepts.';
+        messageElement.className = 'text-blue-700';
+    } else {
+        messageElement.textContent = 'You might benefit from reviewing this material again.';
+        messageElement.className = 'text-red-700';
+    }
+    
+    // Mark quiz as completed if passed
+    if (percentageScore >= 60) {
+        markQuizComplete(currentQuiz, percentageScore);
+    }
+}
+
+function resetQuiz() {
+    // Go back to quiz selector
+    initializeCurrentQuiz();
+}
+
+// Certificate Functions
+function generateCertificate() {
+    const certModal = document.getElementById('certificate-modal');
+    const certDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    
+    // Update certificate date
+    document.getElementById('certificate-date').textContent = certDate;
+    
+    // Show certificate modal
+    showModal('certificate-modal');
+    
+    // Get participant name
+    const participantName = document.getElementById('participant-name').value;
+    if (participantName) {
+        document.getElementById('certificate-name').textContent = participantName;
+    } else {
+        document.getElementById('certificate-name').textContent = "Participant";
+    }
+}
+
+// Additional Functions
+function printCertificate() {
+    window.print();
+}
+
+// Make quiz data available globally
+window.quizData = quizData;
+
+// Set up event listeners after page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners to lecture buttons
+    document.querySelectorAll('[onclick*="showLecture"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        const lectureMatch = functionCall.match(/showLecture\(([0-9]+)\)/);
+        
+        if (lectureMatch && lectureMatch[1]) {
+            const lectureId = parseInt(lectureMatch[1]);
+            
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                showLecture(lectureId);
+            });
+        }
+    });
+    
+    // Add event listeners to case study buttons
+    document.querySelectorAll('[onclick*="showCaseStudy"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        const caseMatch = functionCall.match(/showCaseStudy\(([0-9]+)\)/);
+        
+        if (caseMatch && caseMatch[1]) {
+            const caseId = parseInt(caseMatch[1]);
+            
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                showCaseStudy(caseId);
+            });
+        }
+    });
+    
+    // Add event listeners to quiz buttons
+    document.querySelectorAll('[onclick*="selectQuiz"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        const quizMatch = functionCall.match(/selectQuiz\(([0-9]+)\)/);
+        
+        if (quizMatch && quizMatch[1]) {
+            const quizId = parseInt(quizMatch[1]);
+            
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                selectQuiz(quizId);
+            });
+        }
+    });
+    
+    // Add event listeners to modal close buttons
+    document.querySelectorAll('[onclick*="closeModal"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        const modalMatch = functionCall.match(/closeModal\(['"]([^'"]+)['"]\)/);
+        
+        if (modalMatch && modalMatch[1]) {
+            const modalId = modalMatch[1];
+            
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeModal(modalId);
+            });
+        }
+    });
+    
+    // Add event listeners to other function calls
+    document.querySelectorAll('[onclick*="markLectureComplete"], [onclick*="markCaseStudyComplete"], [onclick*="nextQuestion"], [onclick*="resetQuiz"], [onclick*="generateCertificate"], [onclick*="printCertificate"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        
+        if (functionCall.includes('markLectureComplete')) {
+            const match = functionCall.match(/markLectureComplete\(([0-9]+)\)/);
+            if (match && match[1]) {
+                const id = parseInt(match[1]);
+                button.removeAttribute('onclick');
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    markLectureComplete(id);
+                });
+            }
+        } else if (functionCall.includes('markCaseStudyComplete')) {
+            const match = functionCall.match(/markCaseStudyComplete\(([0-9]+)\)/);
+            if (match && match[1]) {
+                const id = parseInt(match[1]);
+                button.removeAttribute('onclick');
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    markCaseStudyComplete(id);
+                });
+            }
+        } else if (functionCall.includes('nextQuestion')) {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                nextQuestion();
+            });
+        } else if (functionCall.includes('resetQuiz')) {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                resetQuiz();
+            });
+        } else if (functionCall.includes('generateCertificate')) {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                generateCertificate();
+            });
+        } else if (functionCall.includes('printCertificate')) {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                printCertificate();
+            });
+        }
+    });
+    
+    // Add event listeners to slide navigation
+    document.querySelectorAll('[onclick*="goToSlide"], [onclick*="nextSlide"], [onclick*="prevSlide"]').forEach(button => {
+        const functionCall = button.getAttribute('onclick');
+        
+        if (functionCall.includes('goToSlide')) {
+            const match = functionCall.match(/goToSlide\(([0-9]+),\s*['"]([^'"]+)['"]\)/);
+            if (match && match[1] && match[2]) {
+                const slideNum = parseInt(match[1]);
+                const lectureId = match[2];
+                button.removeAttribute('onclick');
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    goToSlide(slideNum, lectureId);
+                });
+            }
+        } else if (functionCall.includes('nextSlide')) {
+            const match = functionCall.match(/nextSlide\(['"]([^'"]+)['"]\)/);
+            if (match && match[1]) {
+                const lectureId = match[1];
+                button.removeAttribute('onclick');
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    nextSlide(lectureId);
+                });
+            }
+        } else if (functionCall.includes('prevSlide')) {
+            const match = functionCall.match(/prevSlide\(['"]([^'"]+)['"]\)/);
+            if (match && match[1]) {
+                const lectureId = match[1];
+                button.removeAttribute('onclick');
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    prevSlide(lectureId);
+                });
+            }
+        }
+    });
+});
